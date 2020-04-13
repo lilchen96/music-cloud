@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 
 import HelloWorld from "@/components/HelloWorld.vue";
 import pageNotFound from "@/view/404NotFound.vue";
+import debug from "@/view/debug.vue";
 
 // 路由配置
 const routes = [
@@ -11,6 +12,12 @@ const routes = [
     path: "/",
     component: HelloWorld,
     meta: { title: "登录|music-cloud" }
+  },
+  {
+    name: "debug",
+    path: "/debug",
+    component: debug,
+    meta: { title: "调试|music-cloud" }
   },
   {
     name: "pageNotFound",

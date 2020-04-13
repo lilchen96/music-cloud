@@ -5,13 +5,7 @@
 <script>
 export default {
   components: {},
-  created() {
-    this.$axios({
-      method: 'post',
-      url: 'getData',
-      data: {}
-    })
-  }
+  created() {}
 }
 </script>
 
