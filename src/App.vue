@@ -4,7 +4,14 @@
 
 <script>
 export default {
-  components: {}
+  components: {},
+  created() {
+    this.$axios({
+      method: 'post',
+      url: 'getData',
+      data: {}
+    })
+  }
 }
 </script>
 
