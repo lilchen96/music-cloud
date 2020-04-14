@@ -1,3 +1,17 @@
+html,
 body {
-  background-color: aqua;
+  height: 100%;
+  margin: 0px;
+}
+body,
+td,
+th {
+  color: #2c3e50;
+  font-size: 14px;
+}
+.container {
+  height: 100%;
+  background-color: #000000;
+  display: flex;
+  flex-direction: column;
 }

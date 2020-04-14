@@ -1,5 +1,5 @@
 <template>
-  <button @click="onClick">{{btnOptions.name}}</button>
+  <button class="base-button" @click="onClick">{{btnOptions.name}}</button>
 </template>
 
 <script>
@@ -11,8 +11,7 @@ export default {
         return {
           name: '按钮',
           type: 'default',
-          size: 'normal',
-          color: 'red'
+          size: 'normal'
         }
       }
     }
@@ -26,5 +25,13 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" scoped>
+.base-button {
+  height: 46px;
+  width: 100%;
+  font-size: 16px;
+  border-radius: 50px;
+  border: 0px;
+  outline: none;
+}
 </style>

@@ -4,8 +4,9 @@ import api from "@/service/api";
 axios.defaults.baseURL = "";
 
 export default options => {
-  axios({
+  return axios({
     ...options,
-    url: api[options.url]
+    url: api[options.url],
+    timeout: 1000 //超时时间设置1min
   });
 };

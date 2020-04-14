@@ -1,24 +1,22 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import HelloWorld from "@/components/HelloWorld.vue";
 import pageNotFound from "@/view/404NotFound.vue";
 import debug from "@/view/debug.vue";
 
+import login from "@/view/login";
+import discovery from "@/view/discovery";
+
 // 路由配置
 const routes = [
-  {
-    name: "HelloWorld",
-    path: "/",
-    component: HelloWorld,
-    meta: { title: "登录|music-cloud" }
-  },
   {
     name: "debug",
     path: "/debug",
     component: debug,
     meta: { title: "调试|music-cloud" }
   },
+  ...login,
+  ...discovery,
   {
     name: "pageNotFound",
     path: "*",

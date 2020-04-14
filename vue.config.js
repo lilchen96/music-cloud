@@ -1,4 +1,4 @@
-const dev = "";
+const dev = "http://192.168.2.216:3000";
 
 module.exports = {
   lintOnSave: false,
@@ -10,14 +10,14 @@ module.exports = {
     host: "0.0.0.0",
     port: 8000,
     proxy: {
-      // "/music": {
-      //   target: dev,
-      //   changeOrigin: true,
-      //   ws: true,
-      //   pathRewrite: {
-      //     "^/music": "/"
-      //   }
-      // },
+      "/music": {
+        target: dev,
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          "^/music": "/"
+        }
+      },
       "/example": {
         target: " http://192.168.1.53:7300/mock/5cc14d54d441812414780993",
         changeOrigin: true,
