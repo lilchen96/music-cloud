@@ -1,11 +1,12 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import pageNotFound from "@/view/404NotFound.vue";
-import debug from "@/view/debug.vue";
+import pageNotFound from "@/views/404NotFound.vue";
+import debug from "@/views/debug.vue";
 
-import login from "@/view/login";
-import discovery from "@/view/discovery";
+import login from "@/views/login";
+import main from "@/views/main";
+import discovery from "@/views/discovery";
 
 // 路由配置
 const routes = [
@@ -13,15 +14,16 @@ const routes = [
     name: "debug",
     path: "/debug",
     component: debug,
-    meta: { title: "调试|music-cloud" }
+    meta: { title: "调试|music-cloud" },
   },
   ...login,
+  ...main,
   ...discovery,
   {
     name: "pageNotFound",
     path: "*",
-    component: pageNotFound
-  }
+    component: pageNotFound,
+  },
 ];
 
 // 配置路由的钩子函数
@@ -43,7 +45,7 @@ export default function() {
   Vue.use(VueRouter);
   const router = new VueRouter({
     mode: "history",
-    routes
+    routes,
   });
   router.beforeEach(beforeEach);
   router.beforeResolve(beforeResolve);

@@ -1,4 +1,4 @@
-import discovery from "@/view/discovery/discovery.vue";
+import discovery from "@/views/discovery/discovery.vue";
 
 export default [
   {

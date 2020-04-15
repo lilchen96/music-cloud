@@ -1,5 +1,5 @@
-import login from "@/view/login/login.vue";
-import cellphoneForm from "@/view/login/cellphoneForm.vue";
+import login from "@/views/login/login.vue";
+import cellphoneForm from "@/views/login/cellphoneForm.vue";
 
 export default [
   {

@@ -1,7 +1,6 @@
 <template>
   <div>
-    <baseInput :inputOptions="inputOptions"></baseInput>
-    <div>{{inputOptions.value}}</div>
+    
   </div>
 </template>
 

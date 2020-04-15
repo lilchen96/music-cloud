@@ -48,7 +48,7 @@ export default {
         .then(res => {
           if (res.data.code === 200) {
             this.$router.push({
-              name: 'discovery'
+              name: 'main'
             })
           }
         })
