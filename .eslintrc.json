@@ -1,0 +1,40 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "extends": ["airbnb-base", "prettier"],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "parser": "vue-eslint-parser",
+    "plugins": ["vue", "prettier"],
+    "settings": {
+        "import/resolver": {
+            "webpack": {
+                "config": "node_modules/@vue/cli-service/webpack.config.js"
+            }
+        }
+    },
+    "rules": {
+        "prettier/prettier": [
+            "error",
+            {
+                "tabWidth": 4, // tab缩进大小,默认为4
+                "useTabs": false, // 使用tab缩进，默认false
+                "semi": true, // 使用分号, 默认true
+                "singleQuote": false, // 使用单引号, 默认false(在jsx中配置无效, 默认都是双引号)
+                "trailingComma": "none", // 行尾逗号,默认none,可选 none|es5|all
+                "bracketSpacing": true, // 对象中的空格 默认true
+                "printWidth": 120,
+                "arrowParens": "avoid", // (x) => {} 箭头函数参数只有一个时是否要有小括号。avoid：省略括号
+                "jsxBracketSameLine": false // 在jsx中把'>' 是否单独放一行
+            }
+        ]
+    }
+}

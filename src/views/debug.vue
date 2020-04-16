@@ -1,22 +1,19 @@
 <template>
-  <div>
-    
-  </div>
+    <div></div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      inputOptions: {
-        value: '123',
-        placeholder: '请输入',
-        style: 'line'
-      }
+    data() {
+        return {
+            inputOptions: {
+                value: "123",
+                placeholder: "请输入",
+                style: "line"
+            }
+        };
     }
-  }
-}
+};
 </script>
 
-<style>
-</style>
+<style></style>
