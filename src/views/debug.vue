@@ -1,9 +1,14 @@
 <template>
-    <div></div>
+    <line-progress-bar></line-progress-bar>
 </template>
 
 <script>
+import lineProgressBar from "@/components/musicPlayer/lineProgressBar.vue";
+
 export default {
+    components: {
+        lineProgressBar
+    },
     data() {
         return {
             inputOptions: {

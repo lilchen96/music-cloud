@@ -1,19 +1,34 @@
 <template>
-    <div class="audio-play-section">
-        <audio id="audio" :src="musicUrl" :autoplay="autoPlay" preload></audio>
-        <!-- <div>{{ getAudioCurrentTime }}</div>
-        <div>{{ getAudioDuration }}</div> -->
+    <div class="audio-play">
+        <audio id="audio" :src="audioUrl" :autoplay="autoPlay" preload></audio>
+        <div v-if="showProgress" class="progress">
+            <div class="time">{{ getAudioCurrentTime }}</div>
+            <line-progress-bar class="progress-bar" ref="progress" :duration="audioDuration + 's'"></line-progress-bar>
+            <div class="time">{{ getAudioDuration }}</div>
+        </div>
     </div>
 </template>
 
 <script>
+import lineProgressBar from "@/components/musicPlayer/lineProgressBar.vue";
+
 export default {
+    components: {
+        lineProgressBar
+    },
     props: {
-        musicUrl: {
+        // audio文件url
+        audioUrl: {
             type: String,
             default: ""
         },
+        // 是否自动播放
         autoPlay: {
+            type: Boolean,
+            default: false
+        },
+        // 是否展示进度条
+        showProgress: {
             type: Boolean,
             default: false
         }
@@ -36,12 +51,13 @@ export default {
     },
 
     watch: {
-        // musicUrl: {
-        //     handler() {
-        //         const audio = document.querySelector("#audio");
-        //         this.audioDuration = audio.duration;
-        //     }
-        // }
+        audioCurrentTime: {
+            handler() {
+                if (this.audioCurrentTime === 0) {
+                    this.$refs.progress.progressReset();
+                }
+            }
+        }
     },
 
     mounted() {
@@ -53,11 +69,13 @@ export default {
         // 当audio播放 开始刷新audioCurrentTime
         audio.onplay = () => {
             this.audioUpdate();
+            this.$refs.progress.progressPlay();
             this.$emit("on-audio-play");
         };
         // 当audio暂停时 清除interval
         audio.onpause = () => {
             clearInterval(this.audioUpdateInterval);
+            this.$refs.progress.progressPause();
             this.$emit("on-audio-pause");
         };
         audio.onended = () => {
@@ -98,4 +116,22 @@ export default {
 };
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.audio-play {
+    .progress {
+        display: flex;
+        justify-content: center;
+        .time {
+            color: #8a8a8a;
+            font-size: 10px;
+        }
+        .progress-bar {
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin: 0px 12px;
+        }
+    }
+}
+</style>

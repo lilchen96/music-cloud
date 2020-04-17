@@ -1,9 +1,10 @@
 <template>
-    <div class="music-player-section">
+    <div class="music-player">
         <audio-player
             ref="autioPlayer"
-            :musicUrl="currentSongUrl"
+            :audioUrl="currentSongUrl"
             :autoPlay="autoPlay"
+            :showProgress="isFullScreen"
             @on-audio-play="onAudioPlay"
             @on-audio-pause="onAudioPause"
             @on-audio-end="onAudioEnd"
@@ -183,7 +184,6 @@ export default {
 
         // 音乐播放结束触发的回调函数
         onAudioEnd() {
-            // 如果是autoPlay isPlay过后会变成true 如果不是 那就是false
             this.switchMusic("next");
         },
 
@@ -198,9 +198,19 @@ export default {
                 });
             }
             if (order === "next") {
-                currentSongIndex += 1;
+                // next播放到最后一首了
+                if (currentSongIndex === this.songList.length - 1) {
+                    currentSongIndex = 0;
+                } else {
+                    currentSongIndex += 1;
+                }
             } else {
-                currentSongIndex -= 1;
+                // pre播放到第一首了
+                if (currentSongIndex === 0) {
+                    currentSongIndex = this.songList.length - 1;
+                } else {
+                    currentSongIndex -= 1;
+                }
             }
             if (this.autoPlay) {
                 this.isPlay = true;
@@ -244,8 +254,7 @@ export default {
 
 // 封面旋转
 .cover-image-animation {
-    animation: rotate 16s infinite linear;
-    animation-fill-mode: forwards;
+    animation: rotate 16s infinite linear forwards;
 }
 
 // 组件缩放动画
@@ -275,7 +284,7 @@ export default {
     transition: all 500ms;
 }
 
-.music-player-section {
+.music-player {
     height: 100%;
 
     // 缩小样式
