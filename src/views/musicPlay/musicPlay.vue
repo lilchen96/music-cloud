@@ -6,10 +6,10 @@
             </div>
             <div class="music-title">
                 <div class="music-name">
-                    {{ "musicName" }}
+                    {{ songDetail.name }}
                 </div>
                 <div class="music-author">
-                    <div>{{ "musicAuthor" }}</div>
+                    <div>{{ songDetail.artist }}</div>
                     <div class="icon-outer">
                         <img class="icon" :src="rightArrowIcon" />
                     </div>
@@ -21,7 +21,15 @@
                 </div>
             </div>
         </div>
-        <div class="content"></div>
+        <div class="content">
+            <div class="music-cover">
+                <img
+                    class="cover-image cover-image-animation"
+                    :style="{ animationPlayState: animationPlayState }"
+                    :src="songDetail.coverUrl"
+                />
+            </div>
+        </div>
         <div class="bottom">
             <div class="top-operations">
                 <div class="icon-outer">
@@ -35,11 +43,22 @@
                 </div> -->
             </div>
             <div class="progress-bar">
-                <audio></audio>
+                <audio-player
+                    ref="autioPlayer"
+                    :musicUrl="musicUrl"
+                    :autoPlay="autoPlay"
+                    @on-audio-play="onAudioPlay"
+                    @on-audio-pause="onAudioPause"
+                ></audio-player>
             </div>
-            <div class="bottom-operations">
+            <!-- <div class="bottom-operations">
                 <div class="icon-outer">
                     <img class="icon" :src="heartIcon" />
+                </div>
+            </div> -->
+            <div class="bottom-operations">
+                <div class="icon-outer">
+                    <img class="icon action" :src="actionIcon" @click="musicAction" />
                 </div>
             </div>
         </div>
@@ -52,21 +71,103 @@ import rightArrowIcon from "@/assets/images/right_arrow_icon.png";
 import shareIcon from "@/assets/images/share_icon.png";
 import heartIcon from "@/assets/images/heart_icon.png";
 import heartFillIcon from "@/assets/images/heart_fill_icon.png";
+import playActionIcon from "@/assets/images/play_action_icon.png";
+import pauseActionIcon from "@/assets/images/pause_action_icon.png";
+
+import audioPlayer from "@/views/musicPlay/components/audioPlayer.vue";
 
 export default {
+    components: {
+        audioPlayer
+    },
     data() {
         return {
             backIcon,
             shareIcon,
             rightArrowIcon,
             heartIcon,
-            heartFillIcon
+            heartFillIcon,
+            musicUrl: "https://music.163.com/song/media/outer/url?id=409736433.mp3", // 音乐url
+            autoPlay: false,
+            isPlay: false, // 音乐是否在播放
+            animationPlayState: "paused", // 动画状态
+            songDetail: {
+                name: "",
+                artist: [],
+                coverUrl: ""
+            }
         };
+    },
+
+    mounted() {},
+    created() {
+        // 查询歌曲信息
+        this.$axios({
+            method: "get",
+            url: "musicDetail",
+            params: {
+                ids: "409736433"
+            }
+        })
+            .then(res => {
+                const song = res.data.songs[0];
+                this.songDetail = {
+                    name: song.name,
+                    artist: song.ar.map(it => it.name).join("/"),
+                    coverUrl: song.al.picUrl
+                };
+            })
+            .catch(() => {});
+    },
+
+    computed: {
+        actionIcon() {
+            return this.isPlay ? pauseActionIcon : playActionIcon;
+        }
+    },
+
+    methods: {
+        // 播放或暂停点击事件
+        musicAction() {
+            this.isPlay = !this.isPlay;
+        },
+
+        // 播放音乐时的回调函数
+        onAudioPlay() {
+            // this.isPlay = true;
+        },
+
+        // // 暂停音乐时的回调函数
+        onAudioPause() {
+            // this.isPlay = false;
+        }
+    },
+
+    watch: {
+        isPlay: {
+            handler() {
+                if (this.isPlay) {
+                    this.$refs.autioPlayer.audioPlay();
+                    this.animationPlayState = "running";
+                } else {
+                    this.$refs.autioPlayer.audioPause();
+                    this.animationPlayState = "paused";
+                }
+            }
+        }
     }
 };
 </script>
 
 <style lang="less" scoped>
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
 .container {
     background-color: transparent;
     background-image: url("../../assets/images/play_background.png");
@@ -86,7 +187,7 @@ export default {
             flex-direction: column;
             text-align: center;
             .music-name {
-                font-size: 17px;
+                font-size: 18px;
             }
             .music-author {
                 display: flex;
@@ -109,9 +210,24 @@ export default {
     }
     .content {
         flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        .music-cover {
+            text-align: center;
+            .cover-image {
+                width: 230px;
+                height: 230px;
+                border-radius: 50%;
+            }
+            .cover-image-animation {
+                animation: rotate 16s infinite linear;
+                animation-fill-mode: forwards;
+            }
+        }
     }
     .bottom {
-        height: 300px;
+        height: 190px;
         .top-operations {
             display: flex;
             justify-content: center;
@@ -121,6 +237,14 @@ export default {
         .bottom-operations {
             display: flex;
             justify-content: center;
+            .icon {
+                width: 30px;
+                height: 30px;
+            }
+            .action {
+                width: 50px;
+                height: 50px;
+            }
         }
         .icon {
             width: 28px;
