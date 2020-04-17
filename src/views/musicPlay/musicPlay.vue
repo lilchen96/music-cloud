@@ -6,10 +6,10 @@
             </div>
             <div class="music-title">
                 <div class="music-name">
-                    {{ songDetail.name }}
+                    {{ currentSongDetail.name }}
                 </div>
                 <div class="music-author">
-                    <div>{{ songDetail.artist }}</div>
+                    <div>{{ currentSongDetail.artist }}</div>
                     <div class="icon-outer">
                         <img class="icon" :src="rightArrowIcon" />
                     </div>
@@ -26,7 +26,7 @@
                 <img
                     class="cover-image cover-image-animation"
                     :style="{ animationPlayState: animationPlayState }"
-                    :src="songDetail.coverUrl"
+                    :src="currentSongDetail.coverUrl"
                 />
             </div>
         </div>
@@ -45,20 +45,22 @@
             <div class="progress-bar">
                 <audio-player
                     ref="autioPlayer"
-                    :musicUrl="musicUrl"
+                    :musicUrl="currentSongUrl"
                     :autoPlay="autoPlay"
                     @on-audio-play="onAudioPlay"
                     @on-audio-pause="onAudioPause"
+                    @on-audio-end="onAudioEnd"
                 ></audio-player>
             </div>
-            <!-- <div class="bottom-operations">
-                <div class="icon-outer">
-                    <img class="icon" :src="heartIcon" />
-                </div>
-            </div> -->
             <div class="bottom-operations">
-                <div class="icon-outer">
+                <div class="icon-outer bottom-operations-item">
+                    <img class="icon" :src="preSongIcon" @click="switchMusic('pre')" />
+                </div>
+                <div class="icon-outer bottom-operations-item">
                     <img class="icon action" :src="actionIcon" @click="musicAction" />
+                </div>
+                <div class="icon-outer bottom-operations-item">
+                    <img class="icon" :src="nextSongIcon" @click="switchMusic('next')" />
                 </div>
             </div>
         </div>
@@ -73,6 +75,8 @@ import heartIcon from "@/assets/images/heart_icon.png";
 import heartFillIcon from "@/assets/images/heart_fill_icon.png";
 import playActionIcon from "@/assets/images/play_action_icon.png";
 import pauseActionIcon from "@/assets/images/pause_action_icon.png";
+import nextSongIcon from "@/assets/images/next_song_icon.png";
+import preSongIcon from "@/assets/images/pre_song_icon.png";
 
 import audioPlayer from "@/views/musicPlay/components/audioPlayer.vue";
 
@@ -87,11 +91,16 @@ export default {
             rightArrowIcon,
             heartIcon,
             heartFillIcon,
+            nextSongIcon,
+            preSongIcon,
             musicUrl: "https://music.163.com/song/media/outer/url?id=409736433.mp3", // 音乐url
-            autoPlay: false,
-            isPlay: false, // 音乐是否在播放
+            autoPlay: true,
+            isPlay: true, // 音乐是否在播放
             animationPlayState: "paused", // 动画状态
-            songDetail: {
+            songIds: ["409736433", "29789328"], // 播放队列的音乐id
+            songList: [],
+            currentSongDetail: {
+                id: "",
                 name: "",
                 artist: [],
                 coverUrl: ""
@@ -106,16 +115,18 @@ export default {
             method: "get",
             url: "musicDetail",
             params: {
-                ids: "409736433"
+                ids: this.songIds.join(",")
             }
         })
             .then(res => {
-                const song = res.data.songs[0];
-                this.songDetail = {
+                this.songList = res.data.songs.map(song => ({
+                    id: song.id,
                     name: song.name,
                     artist: song.ar.map(it => it.name).join("/"),
                     coverUrl: song.al.picUrl
-                };
+                }));
+                this.musicUrl = "";
+                this.currentSongDetail = this.songList[0];
             })
             .catch(() => {});
     },
@@ -123,23 +134,61 @@ export default {
     computed: {
         actionIcon() {
             return this.isPlay ? pauseActionIcon : playActionIcon;
+        },
+
+        currentSongUrl() {
+            debugger;
+            return `https://music.163.com/song/media/outer/url?id=${this.currentSongDetail.id}.mp3`;
         }
     },
 
     methods: {
         // 播放或暂停点击事件
         musicAction() {
-            this.isPlay = !this.isPlay;
+            if (this.isPlay) {
+                this.$refs.autioPlayer.audioPause();
+            } else {
+                this.$refs.autioPlayer.audioPlay();
+            }
         },
 
-        // 播放音乐时的回调函数
+        // 播放音乐时触发的回调函数
         onAudioPlay() {
-            // this.isPlay = true;
+            this.isPlay = true;
         },
 
-        // // 暂停音乐时的回调函数
+        // 暂停音乐时触发的回调函数
         onAudioPause() {
-            // this.isPlay = false;
+            this.isPlay = false;
+        },
+
+        // 音乐播放结束触发的回调函数
+        onAudioEnd() {
+            // 如果是autoPlay isPlay过后会变成true 如果不是 那就是false
+            this.switchMusic("next");
+        },
+
+        // 切换歌曲
+        switchMusic(order) {
+            let currentSongIndex = 0;
+            if (order) {
+                this.songList.forEach((item, index) => {
+                    if (item.id === this.currentSongDetail.id) {
+                        currentSongIndex = index;
+                    }
+                });
+            }
+            if (order === "next") {
+                currentSongIndex += 1;
+            } else {
+                currentSongIndex -= 1;
+            }
+            if (this.autoPlay) {
+                this.isPlay = true;
+            } else {
+                this.isPlay = false;
+            }
+            this.currentSongDetail = this.songList[currentSongIndex];
         }
     },
 
@@ -147,13 +196,12 @@ export default {
         isPlay: {
             handler() {
                 if (this.isPlay) {
-                    this.$refs.autioPlayer.audioPlay();
                     this.animationPlayState = "running";
                 } else {
-                    this.$refs.autioPlayer.audioPause();
                     this.animationPlayState = "paused";
                 }
-            }
+            },
+            immediate: true
         }
     }
 };
@@ -235,15 +283,19 @@ export default {
         .progress-bar {
         }
         .bottom-operations {
+            height: 50px;
             display: flex;
             justify-content: center;
-            .icon {
-                width: 30px;
-                height: 30px;
-            }
-            .action {
-                width: 50px;
-                height: 50px;
+            .bottom-operations-item:not(:last-child) {
+                margin-right: 25px;
+                .icon {
+                    width: 30px;
+                    height: 30px;
+                }
+                .action {
+                    width: 55px;
+                    height: 55px;
+                }
             }
         }
         .icon {

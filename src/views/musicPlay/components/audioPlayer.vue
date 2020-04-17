@@ -60,6 +60,9 @@ export default {
             clearInterval(this.audioUpdateInterval);
             this.$emit("on-audio-pause");
         };
+        audio.onended = () => {
+            this.$emit("on-audio-end");
+        };
     },
 
     methods: {
