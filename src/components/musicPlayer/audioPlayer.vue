@@ -1,8 +1,8 @@
 <template>
     <div class="audio-play-section">
         <audio id="audio" :src="musicUrl" :autoplay="autoPlay" preload></audio>
-        <div>{{ getAudioCurrentTime }}</div>
-        <div>{{ getAudioDuration }}</div>
+        <!-- <div>{{ getAudioCurrentTime }}</div>
+        <div>{{ getAudioDuration }}</div> -->
     </div>
 </template>
 

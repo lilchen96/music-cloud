@@ -1,17 +1,18 @@
 html,
 body {
-  height: 100%;
-  margin: 0px;
+    height: 100%;
+    margin: 0px;
+    overflow: hidden;
 }
 body,
 td,
 th {
-  color: #2c3e50;
-  font-size: 14px;
+    color: #2c3e50;
+    font-size: 14px;
 }
 .container {
-  height: 100%;
-  background-color: #1c1c1c;
-  display: flex;
-  flex-direction: column;
+    height: 100%;
+    background-color: #1c1c1c;
+    display: flex;
+    flex-direction: column;
 }

@@ -7,7 +7,6 @@ import debug from "@/views/debug.vue";
 import login from "@/views/login";
 import main from "@/views/main";
 import discovery from "@/views/discovery";
-import musicPlay from "@/views/musicPlay";
 
 // 路由配置
 const routes = [
@@ -20,7 +19,6 @@ const routes = [
     ...login,
     ...main,
     ...discovery,
-    ...musicPlay,
     {
         name: "pageNotFound",
         path: "*",
