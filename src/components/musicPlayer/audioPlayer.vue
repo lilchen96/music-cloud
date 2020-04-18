@@ -2,9 +2,9 @@
     <div class="audio-play">
         <audio id="audio" :src="audioUrl" :autoplay="autoPlay" preload></audio>
         <div v-if="showProgress" class="progress">
-            <div class="time">{{ getAudioCurrentTime }}</div>
+            <div class="time left">{{ getAudioCurrentTime }}</div>
             <line-progress-bar class="progress-bar" ref="progress" :duration="audioDuration + 's'"></line-progress-bar>
-            <div class="time">{{ getAudioDuration }}</div>
+            <div class="time right">{{ getAudioDuration }}</div>
         </div>
     </div>
 </template>
@@ -122,10 +122,22 @@ export default {
         display: flex;
         justify-content: center;
         .time {
-            color: #8a8a8a;
+            position: absolute;
+            bottom: 144px;
+
+            color: #464242;
             font-size: 10px;
         }
+        .left {
+            right: 12px;
+        }
+        .right {
+            left: 12px;
+        }
         .progress-bar {
+            position: absolute;
+            bottom: 150px;
+            left: 27px;
             width: 80%;
             display: flex;
             flex-direction: column;

@@ -305,6 +305,7 @@ export default {
         background-color: transparent;
         background-image: url("../../assets/images/play_background.png");
         background-repeat: no-repeat;
+        background-size: cover;
         display: flex;
         flex-direction: column;
         padding: 0px 10px;
@@ -365,6 +366,7 @@ export default {
             }
             .bottom-operations {
                 height: 50px;
+                margin-top: 55px;
                 display: flex;
                 justify-content: center;
                 .bottom-operations-item:not(:last-child) {
