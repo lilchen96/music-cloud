@@ -146,7 +146,10 @@ export default {
                     artist: song.ar.map(it => it.name).join("/"),
                     coverUrl: song.al.picUrl
                 }));
-                this.currentSongDetail = this.songList[0];
+                if (this.songList.length > 0) {
+                    const [currentSongDetail] = [this.songList];
+                    this.currentSongDetail = currentSongDetail;
+                }
             })
             .catch(() => {});
     },
@@ -204,7 +207,8 @@ export default {
                 } else {
                     currentSongIndex += 1;
                 }
-            } else {
+            }
+            if (order === "pre") {
                 // pre播放到第一首了
                 if (currentSongIndex === 0) {
                     currentSongIndex = this.songList.length - 1;

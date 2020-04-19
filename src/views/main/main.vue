@@ -67,14 +67,7 @@ export default {
     methods: {
         // 播放器缩放
         changeIsFullScreen(val) {
-            debugger;
             this.isFullScreen = val;
-        }
-    },
-    watch: {
-        isFullScreen() {
-            debugger;
-            this.isFullScreen;
         }
     }
 };
