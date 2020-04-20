@@ -147,7 +147,7 @@ export default {
                     coverUrl: song.al.picUrl
                 }));
                 if (this.songList.length > 0) {
-                    const [currentSongDetail] = [this.songList];
+                    const [currentSongDetail] = this.songList;
                     this.currentSongDetail = currentSongDetail;
                 }
             })

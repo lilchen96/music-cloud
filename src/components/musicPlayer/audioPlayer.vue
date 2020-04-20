@@ -3,7 +3,12 @@
         <audio id="audio" :src="audioUrl" :autoplay="autoPlay" preload></audio>
         <div v-if="showProgress" class="progress">
             <div class="time left">{{ getAudioCurrentTime }}</div>
-            <line-progress-bar class="progress-bar" ref="progress" :duration="audioDuration + 's'"></line-progress-bar>
+            <line-progress-bar
+                class="progress-bar"
+                ref="progress"
+                :duration="audioDuration"
+                :progress="audioCurrentTime"
+            ></line-progress-bar>
             <div class="time right">{{ getAudioDuration }}</div>
         </div>
     </div>
@@ -50,16 +55,6 @@ export default {
         }
     },
 
-    watch: {
-        audioCurrentTime: {
-            handler() {
-                if (this.audioCurrentTime === 0) {
-                    this.$refs.progress.progressReset();
-                }
-            }
-        }
-    },
-
     mounted() {
         const audio = document.querySelector("#audio");
         // 当audio缓冲足以播放时 获取音乐总时间audioDuration
@@ -67,17 +62,32 @@ export default {
             this.audioDuration = audio.duration;
         };
         // 当audio播放 开始刷新audioCurrentTime
-        audio.onplay = () => {
-            this.audioUpdate();
-            this.$refs.progress.progressPlay();
+        audio.onplaying = () => {
+            this.timeUpdateStart();
+            if (this.showProgress) {
+                this.$refs.progress.run();
+            }
             this.$emit("on-audio-play");
         };
+
+        // 当audio开始加载且未实际加载任何数据前
+        audio.onloadstart = () => {
+            this.timeUpdateStop();
+            if (this.showProgress) {
+                this.$refs.progress.stop();
+            }
+        };
+
         // 当audio暂停时 清除interval
         audio.onpause = () => {
-            clearInterval(this.audioUpdateInterval);
-            this.$refs.progress.progressPause();
+            this.timeUpdateStop();
+            if (this.showProgress) {
+                this.$refs.progress.stop();
+            }
             this.$emit("on-audio-pause");
         };
+
+        // 当audio播放完毕
         audio.onended = () => {
             this.$emit("on-audio-end");
         };
@@ -94,11 +104,18 @@ export default {
         },
 
         // 更新audio状态 1s间隔
-        audioUpdate() {
+        timeUpdateStart() {
+            // 立即执行一次
+            this.audioCurrentTime = document.querySelector("#audio").currentTime;
             this.audioUpdateInterval = setInterval(() => {
                 const audio = document.querySelector("#audio");
                 this.audioCurrentTime = audio.currentTime;
             }, 1000);
+        },
+
+        // 停止audio状态 1s间隔
+        timeUpdateStop() {
+            clearInterval(this.audioUpdateInterval);
         },
 
         // 格式化秒数
@@ -129,10 +146,10 @@ export default {
             font-size: 10px;
         }
         .left {
-            right: 12px;
+            left: 12px;
         }
         .right {
-            left: 12px;
+            right: 12px;
         }
         .progress-bar {
             position: absolute;

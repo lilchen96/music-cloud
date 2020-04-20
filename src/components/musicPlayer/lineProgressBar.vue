@@ -1,12 +1,10 @@
 <template>
     <div class="line-progress-bar">
         <div class="inner-line"></div>
+        <div class="outer-line" :style="{ transform: 'translateX(' + (progressPercent - 100) + '%' + ')' }"></div>
         <div
-            :class="className"
-            :style="{
-                animationDuration: duration,
-                animationPlayState: playState
-            }"
+            class="draggle-point"
+            :style="{ transform: 'translateX(' + (progressPercent / 100) * progressWidth + 'px' + ')' }"
         ></div>
     </div>
 </template>
@@ -14,82 +12,111 @@
 <script>
 export default {
     props: {
-        // 进度条加载时间
+        // 进度条加载总时间 单位s
         duration: {
-            type: String,
-            default: "60s"
+            type: Number,
+            default: 60
+        },
+        // 当前时间 单位s
+        progress: {
+            type: Number,
+            default: 0
         }
     },
     data() {
         return {
-            playState: "paused", // 进度条状态
-            className: "outer-line1" // class名称用来重置
+            progressPercent: 0, // 进度条 0%
+            speed: 1, // 进度条速度
+            interval: {}, // 定时任务
+            progressWidth: 0 // 进度条长度
         };
     },
 
+    mounted() {
+        this.progressWidth = document.querySelector(".inner-line").clientWidth;
+    },
+
     methods: {
-        // 进度条开始
-        progressPlay() {
-            this.playState = "running";
+        // 进度条启动
+        run() {
+            this.refresh();
+            this.interval = setInterval(this.refresh, 12);
         },
 
-        // 进度条暂停
-        progressPause() {
-            this.playState = "paused";
+        // 进度条停止
+        stop() {
+            clearInterval(this.interval);
         },
 
-        // 进度条重置
-        progressReset() {
-            if (this.className === "outer-line1") {
-                this.className = "outer-line2";
-            } else {
-                this.className = "outer-line1";
+        //
+        reset() {
+            this.progressPercent = 0;
+        },
+
+        // 进度计算
+        getTranslateX() {},
+
+        // 进度条速度计算
+        getSpeed(duration) {
+            // 100 份
+            const speed = (100 / duration / 1000) * 12;
+            return speed;
+        },
+
+        // 刷新进度条
+        refresh() {
+            this.progressPercent += this.speed;
+            if (this.progressPercent === 100) {
+                clearInterval(this.interval);
             }
+        }
+    },
+
+    watch: {
+        progress: {
+            handler() {
+                if (this.progress === 0) {
+                    this.progressPercent = 0;
+                } else {
+                    this.progressPercent = (this.progress / this.duration) * 100;
+                }
+            },
+            immediate: true
+        },
+        duration: {
+            handler() {
+                this.speed = this.getSpeed(this.duration);
+            },
+            immediate: true
         }
     }
 };
 </script>
 
 <style lang="less" scoped>
-@keyframes progress1 {
-    from {
-        transform: translateX(-100%);
-    }
-    to {
-        transform: translateX(0);
-    }
-}
-@keyframes progress2 {
-    from {
-        transform: translateX(-100%);
-    }
-    to {
-        transform: translateX(0);
-    }
-}
 .line-progress-bar {
     overflow-y: hidden;
+    height: 10px;
     .inner-line {
         background-color: #8a8a8a;
         width: 100%;
         height: 2px;
         border-radius: 10px;
     }
-    .outer-line1 {
+
+    .outer-line {
         background-color: #fff;
         margin-top: -2px;
         width: 100%;
         height: 2px;
         border-radius: 10px;
-        animation: progress1 60s linear forwards;
     }
-    .outer-line2 {
+    .draggle-point {
+        position: absolute;
         background-color: #fff;
-        margin-top: -2px;
-        width: 100%;
-        height: 2px;
-        border-radius: 10px;
-        animation: progress2 60s linear forwards;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
     }
 }
 </style>
