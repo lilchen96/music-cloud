@@ -96,16 +96,16 @@ export default {
 <style lang="less" scoped>
 .line-progress-bar {
     overflow-y: hidden;
-    height: 10px;
     .inner-line {
-        background-color: #8a8a8a;
+        background-color: #b9b9b9;
         width: 100%;
         height: 2px;
         border-radius: 10px;
+        opacity: 0.5;
     }
 
     .outer-line {
-        background-color: #fff;
+        background-color: #e3e3e3;
         margin-top: -2px;
         width: 100%;
         height: 2px;

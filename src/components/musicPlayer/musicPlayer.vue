@@ -5,6 +5,7 @@
             :audioUrl="currentSongUrl"
             :autoPlay="autoPlay"
             :showProgress="isFullScreen"
+            progressPosition="150"
             @on-audio-play="onAudioPlay"
             @on-audio-pause="onAudioPause"
             @on-audio-end="onAudioEnd"
@@ -361,7 +362,7 @@ export default {
             }
         }
         .bottom {
-            height: 190px;
+            height: 220px;
             .top-operations {
                 display: flex;
                 justify-content: center;
@@ -370,7 +371,7 @@ export default {
             }
             .bottom-operations {
                 height: 50px;
-                margin-top: 55px;
+                margin-top: 65px;
                 display: flex;
                 justify-content: center;
                 .bottom-operations-item:not(:last-child) {

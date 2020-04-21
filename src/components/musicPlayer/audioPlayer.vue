@@ -1,7 +1,7 @@
 <template>
     <div class="audio-play">
         <audio id="audio" :src="audioUrl" :autoplay="autoPlay" preload></audio>
-        <div v-if="showProgress" class="progress">
+        <div v-if="showProgress" class="progress" :style="{ bottom: progressPosition + 'px' }">
             <div class="time left">{{ getAudioCurrentTime }}</div>
             <line-progress-bar
                 class="progress-bar"
@@ -36,6 +36,11 @@ export default {
         showProgress: {
             type: Boolean,
             default: false
+        },
+        // 进度条距页面底部高度
+        progressPosition: {
+            type: Number,
+            default: 150
         }
     },
     data() {
@@ -136,30 +141,21 @@ export default {
 <style lang="less" scoped>
 .audio-play {
     .progress {
+        position: absolute;
+        width: 100%;
         display: flex;
         justify-content: center;
         .time {
-            position: absolute;
-            bottom: 144px;
-
-            color: #464242;
+            color: #9e9e9e;
             font-size: 10px;
-        }
-        .left {
-            left: 12px;
-        }
-        .right {
-            right: 12px;
+            opacity: 0.8;
         }
         .progress-bar {
-            position: absolute;
-            bottom: 150px;
-            left: 27px;
             width: 80%;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            margin: 0px 12px;
+            margin: 0px 8px;
         }
     }
 }
