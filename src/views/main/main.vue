@@ -98,11 +98,13 @@ export default {
 
 <style lang="less" scoped>
 .container {
+    color: #fff;
     .fullScreen {
         height: 100%;
         display: flex;
         flex-direction: column;
         .router {
+            height: 100px;
             flex: 1;
         }
         .bottom {
