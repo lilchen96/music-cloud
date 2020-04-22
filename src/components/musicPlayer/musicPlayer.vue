@@ -5,7 +5,7 @@
             :audioUrl="currentSongUrl"
             :autoPlay="autoPlay"
             :showProgress="isFullScreen"
-            progressPosition="150"
+            :progressPosition="progressPosition"
             @on-audio-play="onAudioPlay"
             @on-audio-pause="onAudioPause"
             @on-audio-end="onAudioEnd"
@@ -117,6 +117,7 @@ export default {
             preSongIcon,
             animationName: "full", // 缩放 动画名称
             autoPlay: false,
+            progressPosition: 150, // 进度条位置
             isPlay: false, // 音乐是否在播放
             animationPlayState: "paused", // 动画状态
             songIds: ["409736433", "29789328"], // 播放队列的音乐id
@@ -290,23 +291,21 @@ export default {
 }
 
 .music-player {
-    height: 100%;
-
     // 缩小样式
     .mini {
         position: absolute;
         right: 10px;
         top: 10px;
         .cover-image {
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
         }
     }
 
     // 全屏样式
     .full-screen {
-        height: 100%;
+        height: 100vh;
         background-color: transparent;
         background-image: url("../../assets/images/play_background.png");
         background-repeat: no-repeat;

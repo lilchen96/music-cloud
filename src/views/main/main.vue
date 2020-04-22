@@ -1,8 +1,11 @@
 <template>
     <div class="container">
-        <music-player :isFullScreen="isFullScreen" @changeIsFullScreen="changeIsFullScreen"></music-player>
+        <music-player
+            style="z-index: 1;"
+            :isFullScreen="isFullScreen"
+            @changeIsFullScreen="changeIsFullScreen"
+        ></music-player>
         <div class="fullScreen" v-if="!isFullScreen">
-            <div class="top"></div>
             <div class="router">
                 <router-view></router-view>
             </div>
@@ -39,25 +42,45 @@ export default {
                         url: discoverIcon,
                         onClick: () => {
                             this.$router.push({
-                                name: "musicPlay"
+                                name: ""
                             });
                         }
                     },
                     {
                         label: "视频",
-                        url: playIcon
+                        url: playIcon,
+                        onClick: () => {
+                            this.$router.push({
+                                name: ""
+                            });
+                        }
                     },
                     {
                         label: "我的",
-                        url: musicIcon
+                        url: musicIcon,
+                        onClick: () => {
+                            this.$router.push({
+                                name: "mine"
+                            });
+                        }
                     },
                     {
                         label: "云村",
-                        url: groupIcon
+                        url: groupIcon,
+                        onClick: () => {
+                            this.$router.push({
+                                name: ""
+                            });
+                        }
                     },
                     {
                         label: "账号",
-                        url: userIcon
+                        url: userIcon,
+                        onClick: () => {
+                            this.$router.push({
+                                name: ""
+                            });
+                        }
                     }
                 ]
             }
@@ -79,9 +102,6 @@ export default {
         height: 100%;
         display: flex;
         flex-direction: column;
-        .top {
-            height: 30px;
-        }
         .router {
             flex: 1;
         }

@@ -47,6 +47,14 @@ export default {
             })
                 .then(res => {
                     if (res.data.code === 200) {
+                        const accountInfo = {
+                            userId: res.data.account.id,
+                            gender: res.data.profile.gender,
+                            nickname: res.data.profile.nickname,
+                            avatarUrl: res.data.profile.avatarUrl,
+                            backgroundUrl: res.data.profile.backgroundUrl
+                        };
+                        localStorage.setItem("accountInfo", JSON.stringify(accountInfo));
                         this.$router.push({
                             name: "main"
                         });
