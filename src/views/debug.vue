@@ -1,21 +1,49 @@
 <template>
-    <line-progress-bar></line-progress-bar>
+    <music-module-list :list="list"></music-module-list>
 </template>
 
 <script>
-import lineProgressBar from "@/components/musicPlayer/lineProgressBar.vue";
+import musicModuleList from "@/views/main/mine/components/musicModuleList.vue";
+import heartFillIcon from "@/assets/images/heart_fill_icon.png";
 
 export default {
     components: {
-        lineProgressBar
+        musicModuleList
     },
     data() {
         return {
-            inputOptions: {
-                value: "123",
-                placeholder: "请输入",
-                style: "line"
-            }
+            list: [
+                {
+                    link: "a",
+                    icon: heartFillIcon,
+                    name: "我喜欢的音乐",
+                    description: "最爱的音乐"
+                },
+                {
+                    link: "a",
+                    icon: heartFillIcon,
+                    name: "我喜欢的音乐",
+                    description: "最爱的音乐"
+                },
+                {
+                    link: "a",
+                    icon: heartFillIcon,
+                    name: "我喜欢的音乐",
+                    description: "最爱的音乐"
+                },
+                {
+                    link: "a",
+                    icon: heartFillIcon,
+                    name: "我喜欢的音乐",
+                    description: "最爱的音乐"
+                },
+                {
+                    link: "a",
+                    icon: heartFillIcon,
+                    name: "我喜欢的音乐",
+                    description: "最爱的音乐"
+                }
+            ]
         };
     }
 };

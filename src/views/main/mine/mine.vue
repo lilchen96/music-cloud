@@ -37,21 +37,17 @@
             <div class="mine-content" :class="!outerScroller ? 'overflow' : ''">
                 <div class="functional-module">
                     <div class="top-title">我的音乐</div>
-                    <div class="my-music">
-                        <div class="my-music-item"></div>
-                        <div class="my-music-item"></div>
-                        <div class="my-music-item"></div>
-                    </div>
+                    <music-module-list :list="musicModuleList"></music-module-list>
                 </div>
 
                 <div class="functional-module">
                     <div class="top-title">创建歌单</div>
-                    <div class="play-list">
-                        <div class="play-list-item">
-                            <img class="cover-image" />
-                            <span class="name"></span>
-                        </div>
-                    </div>
+                    <paly-list-show :list="myPlaylists"></paly-list-show>
+                </div>
+
+                <div class="functional-module">
+                    <div class="top-title">收藏歌单</div>
+                    <paly-list-show :list="subscribedlists"></paly-list-show>
                 </div>
             </div>
         </div>
@@ -59,12 +55,19 @@
 </template>
 
 <script>
+import musicModuleList from "@/views/main/mine/components/musicModuleList.vue";
+import palyListShow from "@/views/main/mine/components/palyListShow.vue";
+
 import cloudIcon from "@/assets/images/cloud_icon.png";
-import localMusicIcon from "@/assets/images/local_music_icon.png";
-import radioIcon from "@/assets/images/radio_icon.png";
 import myFavouriteIcon from "@/assets/images/my_favourite_icon.png";
+import heartFillIcon from "@/assets/images/heart_fill_icon.png";
 
 export default {
+    components: {
+        musicModuleList,
+        palyListShow
+    },
+
     data() {
         return {
             icons: {
@@ -75,16 +78,51 @@ export default {
             avatarUrl: "",
             nickname: "",
             backgroundUrl: "",
-            outerScroller: true // 外滚动和内滚动
+            outerScroller: true, // 外滚动和内滚动
+            // 我的音乐模块功能块
+            musicModuleList: [
+                {
+                    link: "a",
+                    icon: heartFillIcon,
+                    name: "我喜欢的音乐",
+                    description: "最爱的音乐"
+                },
+                {
+                    link: "a",
+                    icon: heartFillIcon,
+                    name: "我喜欢的音乐",
+                    description: "最爱的音乐"
+                },
+                {
+                    link: "a",
+                    icon: heartFillIcon,
+                    name: "我喜欢的音乐",
+                    description: "最爱的音乐"
+                },
+                {
+                    link: "a",
+                    icon: heartFillIcon,
+                    name: "我喜欢的音乐",
+                    description: "最爱的音乐"
+                },
+                {
+                    link: "a",
+                    icon: heartFillIcon,
+                    name: "我喜欢的音乐",
+                    description: "最爱的音乐"
+                }
+            ],
+            //  创建歌单
+            myPlaylists: [],
+
+            // 收藏歌单
+            subscribedlists: []
         };
     },
 
     created() {
-        const accountInfo = JSON.parse(localStorage.getItem("accountInfo"));
-        this.userId = accountInfo.userId;
-        this.nickname = accountInfo.nickname;
-        this.avatarUrl = accountInfo.avatarUrl;
-        this.backgroundUrl = accountInfo.backgroundUrl;
+        this.initAccountInfo();
+        this.getPlaylist();
     },
 
     mounted() {
@@ -97,21 +135,51 @@ export default {
             const outer = document.querySelector(".section");
             const inner = document.querySelector(".mine-content");
 
-            // outer.addEventListener("onscroll", () => {
-            // });
-            outer.onscroll = () => {
-                if (outer.scrollTop - 10 >= topHeight) {
-                    this.outerScroller = false;
-                    outer.scrollTop = topHeight;
-                    // outer.style.position = "fixed";
-                }
-            };
+            // outer.onscroll = () => {
+            //     if (outer.scrollTop - 10 >= topHeight) {
+            //         this.outerScroller = false;
+            //         outer.scrollTop = topHeight;
+            //         // outer.style.position = "fixed";
+            //     }
+            // };
 
-            inner.onscroll = () => {
-                if (inner.scrollTop <= 0) {
-                    this.outerScroller = true;
+            // inner.onscroll = () => {
+            //     if (inner.scrollTop <= 0) {
+            //         this.outerScroller = true;
+            //     }
+            // };
+        },
+
+        // 初始化用户信息
+        initAccountInfo() {
+            const accountInfo = JSON.parse(localStorage.getItem("accountInfo"));
+            this.userId = accountInfo.userId;
+            this.nickname = accountInfo.nickname;
+            this.avatarUrl = accountInfo.avatarUrl;
+            this.backgroundUrl = accountInfo.backgroundUrl;
+        },
+
+        // 获取用户歌单
+        async getPlaylist() {
+            const res = await this.$axios({
+                method: "get",
+                url: "getPlaylist",
+                params: {
+                    uid: this.userId
                 }
-            };
+            });
+            const myPlaylists = res.data.playlist.filter(item => !item.subscribed && item.specialType !== 5);
+            const subscribedlists = res.data.playlist.filter(item => item.subscribed);
+            this.myPlaylists = myPlaylists.map(item => ({
+                coverUrl: item.coverImgUrl,
+                name: item.name,
+                count: item.trackCount
+            }));
+            this.subscribedlists = subscribedlists.map(item => ({
+                coverUrl: item.coverImgUrl,
+                name: item.name,
+                count: item.trackCount
+            }));
         }
     }
 };
@@ -182,14 +250,17 @@ export default {
         }
         .mine-content {
             background-color: #1c1c1c;
-            border-radius: 24px;
-            background-color: aquamarine;
-            height: 500px;
+            border-radius: 22px;
+            padding: 16px 16px;
             .functional-module {
+                margin-bottom: 26px;
                 .top-title {
+                    font-size: 16px;
+                    margin-bottom: 12px;
                 }
                 .my-music {
-                    height: 500px;
+                    display: flex;
+                    justify-content: space-between;
                 }
                 .play-list {
                     height: 500px;

@@ -1,0 +1,51 @@
+<template>
+    <div class="play-list-show">
+        <div class="play-list-item" v-for="item in list">
+            <div class="cover">
+                <img :src="item.coverUrl" />
+            </div>
+            <div class="description">
+                <div class="name">{{ item.name }}</div>
+                <div class="count">{{ item.count }}</div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    props: {
+        list: {
+            type: Array,
+            default: []
+        }
+    }
+};
+</script>
+
+<style lang="less" scoped>
+.play-list-show {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    .play-list-item {
+        width: 48%;
+        display: flex;
+        margin-bottom: 16px;
+        .cover {
+            img {
+                width: 60px;
+                height: 60px;
+                border-radius: 8px;
+                border: 0.3px solid #fff;
+            }
+        }
+        .description {
+            margin-left: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    }
+}
+</style>
