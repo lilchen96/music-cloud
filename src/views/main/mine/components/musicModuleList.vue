@@ -2,15 +2,22 @@
     <div class="music-module-list">
         <div class="list">
             <div class="list-item" v-for="item in list" :key="item.link" @click="click(item.link)">
-                <div class="icon">
-                    <img :src="item.icon" />
+                <div class="item">
+                    <div class="icon">
+                        <img :src="item.icon" />
+                    </div>
+                    <div class="name">
+                        {{ item.name }}
+                    </div>
+                    <div class="description">
+                        {{ item.description }}
+                    </div>
                 </div>
-                <div class="name">
-                    {{ item.name }}
-                </div>
-                <div class="description">
-                    {{ item.description }}
-                </div>
+                <div
+                    class="background-image"
+                    v-if="item.coverImage"
+                    :style="{ backgroundImage: 'url(' + item.coverImage + ')' }"
+                ></div>
             </div>
         </div>
     </div>
@@ -42,13 +49,30 @@ export default {
     .list {
         flex: 1;
         display: flex;
-        .list-item {
+    }
+    .list-item {
+        position: relative;
+        width: 115px;
+        height: 155px;
+        background-color: #3d3d3d;
+        border-radius: 12px;
+        text-align: center;
+        color: #fff;
+        overflow: hidden;
+        .background-image {
+            position: absolute;
+            top: 0px;
+            left: 0px;
             width: 115px;
             height: 155px;
-            background-color: #3d3d3d;
-            border-radius: 12px;
-            text-align: center;
-            color: #fff;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.4;
+        }
+        .item {
+            position: relative;
+            z-index: 1;
             .icon {
                 margin-top: 45px;
                 img {
@@ -59,13 +83,13 @@ export default {
             .name {
             }
             .description {
-                opacity: 0.5;
+                opacity: 0.6;
                 margin-top: 25px;
             }
         }
-        .list-item:not(:first-child) {
-            margin-left: 10px;
-        }
+    }
+    .list-item:not(:first-child) {
+        margin-left: 10px;
     }
 }
 </style>

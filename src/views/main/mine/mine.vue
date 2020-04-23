@@ -41,13 +41,10 @@
                 </div>
 
                 <div class="functional-module">
-                    <div class="top-title">创建歌单</div>
-                    <paly-list-show :list="myPlaylists"></paly-list-show>
-                </div>
-
-                <div class="functional-module">
-                    <div class="top-title">收藏歌单</div>
-                    <paly-list-show :list="subscribedlists"></paly-list-show>
+                    <top-tab-title :tabList="playlistTabList">
+                        <paly-list-show slot="tab1" :list="myPlaylists"></paly-list-show>
+                        <paly-list-show slot="tab2" :list="subscribedlists"></paly-list-show>
+                    </top-tab-title>
                 </div>
             </div>
         </div>
@@ -57,15 +54,20 @@
 <script>
 import musicModuleList from "@/views/main/mine/components/musicModuleList.vue";
 import palyListShow from "@/views/main/mine/components/palyListShow.vue";
+import topTabTitle from "@/views/main/mine/components/topTabTitle.vue";
 
 import cloudIcon from "@/assets/images/cloud_icon.png";
 import myFavouriteIcon from "@/assets/images/my_favourite_icon.png";
 import heartFillIcon from "@/assets/images/heart_fill_icon.png";
+import historySacnFillIcon from "@/assets/images/history_sacn_fill_icon.png";
+import mineCover1 from "@/assets/images/mine_cover1.png";
+import mineCover2 from "@/assets/images/mine_cover2.png";
 
 export default {
     components: {
         musicModuleList,
-        palyListShow
+        palyListShow,
+        topTabTitle
     },
 
     data() {
@@ -85,13 +87,15 @@ export default {
                     link: "a",
                     icon: heartFillIcon,
                     name: "我喜欢的音乐",
-                    description: "最爱的音乐"
+                    description: "最爱的音乐",
+                    coverImage: mineCover1
                 },
                 {
                     link: "a",
-                    icon: heartFillIcon,
-                    name: "我喜欢的音乐",
-                    description: "最爱的音乐"
+                    icon: historySacnFillIcon,
+                    name: "最近播放",
+                    description: "最近爱听的歌",
+                    coverImage: mineCover2
                 },
                 {
                     link: "a",
@@ -112,6 +116,20 @@ export default {
                     description: "最爱的音乐"
                 }
             ],
+
+            playlistTabList: [
+                {
+                    id: "tab1",
+                    name: "创建歌单",
+                    count: ""
+                },
+                {
+                    id: "tab2",
+                    name: "收藏歌单",
+                    count: ""
+                }
+            ],
+
             //  创建歌单
             myPlaylists: [],
 
@@ -180,6 +198,8 @@ export default {
                 name: item.name,
                 count: item.trackCount
             }));
+            this.playlistTabList[0].count = this.myPlaylists.length;
+            this.playlistTabList[1].count = this.subscribedlists.length;
         }
     }
 };
@@ -190,6 +210,7 @@ export default {
     height: 100%;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
     .background-image {
         position: absolute;
         top: -25px;
@@ -252,7 +273,7 @@ export default {
             background-color: #1c1c1c;
             border-radius: 22px;
             padding: 16px 16px;
-            .functional-module {
+            .functional-module:not(:last-child) {
                 margin-bottom: 26px;
                 .top-title {
                     font-size: 16px;

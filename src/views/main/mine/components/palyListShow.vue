@@ -6,7 +6,7 @@
             </div>
             <div class="description">
                 <div class="name">{{ item.name }}</div>
-                <div class="count">{{ item.count }}</div>
+                <div class="count">{{ item.count + "首" }}</div>
             </div>
         </div>
     </div>
@@ -41,10 +41,22 @@ export default {
             }
         }
         .description {
+            height: 60px;
             margin-left: 10px;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            .name {
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+            .count {
+                margin-top: 6px;
+                opacity: 0.4;
+                font-size: 12px;
+            }
         }
     }
 }

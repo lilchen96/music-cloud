@@ -1,4 +1,5 @@
-const dev = "http://localhost:3000";
+// const dev = "http://localhost:3000";
+const dev = "http://192.168.2.206:3000";
 
 module.exports = {
     lintOnSave: false,
