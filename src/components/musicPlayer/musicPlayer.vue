@@ -24,7 +24,7 @@
             <div class="full-screen" v-if="isFullScreen">
                 <div class="top">
                     <div class="back-btn icon-outer">
-                        <img class="icon" :src="backIcon" @click="changeIsFullScreen" />
+                        <img class="icon" :src="icons.backIcon" @click="changeIsFullScreen" />
                     </div>
                     <div class="music-title">
                         <div class="music-name">
@@ -33,13 +33,13 @@
                         <div class="music-author">
                             <div>{{ currentSongDetail.artist }}</div>
                             <div class="icon-outer">
-                                <img class="icon" :src="rightArrowIcon" />
+                                <img class="icon" :src="icons.rightArrowIcon" />
                             </div>
                         </div>
                     </div>
                     <div class="top-operations">
                         <div class="operation-item icon-outer">
-                            <img class="icon" :src="shareIcon" />
+                            <img class="icon" :src="icons.shareIcon" />
                         </div>
                     </div>
                 </div>
@@ -55,25 +55,19 @@
                 <div class="bottom">
                     <div class="top-operations">
                         <div class="icon-outer">
-                            <img class="icon" :src="heartIcon" />
+                            <img class="icon" :src="icons.heartIcon" />
                         </div>
-                        <!-- <div class="icon-outer">
-                    <img class="icon" :src="rightArrowIcon" />
-                </div>
-                <div class="icon-outer">
-                    <img class="icon" :src="rightArrowIcon" />
-                </div> -->
                     </div>
                     <div class="progress-bar"></div>
                     <div class="bottom-operations">
                         <div class="icon-outer bottom-operations-item">
-                            <img class="icon" :src="preSongIcon" @click="switchMusic('pre')" />
+                            <img class="icon" :src="icons.preSongIcon" @click="switchMusic('pre')" />
                         </div>
                         <div class="icon-outer bottom-operations-item">
                             <img class="icon action" :src="actionIcon" @click="musicAction" />
                         </div>
                         <div class="icon-outer bottom-operations-item">
-                            <img class="icon" :src="nextSongIcon" @click="switchMusic('next')" />
+                            <img class="icon" :src="icons.nextSongIcon" @click="switchMusic('next')" />
                         </div>
                     </div>
                 </div>
@@ -108,13 +102,15 @@ export default {
     },
     data() {
         return {
-            backIcon,
-            shareIcon,
-            rightArrowIcon,
-            heartIcon,
-            heartFillIcon,
-            nextSongIcon,
-            preSongIcon,
+            icons: {
+                backIcon,
+                shareIcon,
+                rightArrowIcon,
+                heartIcon,
+                heartFillIcon,
+                nextSongIcon,
+                preSongIcon
+            },
             animationName: "full", // 缩放 动画名称
             autoPlay: false,
             progressPosition: 150, // 进度条位置
