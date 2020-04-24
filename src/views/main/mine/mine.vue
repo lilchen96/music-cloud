@@ -149,10 +149,9 @@ export default {
 
     methods: {
         registerScrollEvent() {
-            const topHeight = document.querySelector(".mine-top").offsetHeight;
-            const outer = document.querySelector(".section");
-            const inner = document.querySelector(".mine-content");
-
+            // const topHeight = document.querySelector(".mine-top").offsetHeight;
+            // const outer = document.querySelector(".section");
+            // const inner = document.querySelector(".mine-content");
             // outer.onscroll = () => {
             //     if (outer.scrollTop - 10 >= topHeight) {
             //         this.outerScroller = false;
@@ -160,7 +159,6 @@ export default {
             //         // outer.style.position = "fixed";
             //     }
             // };
-
             // inner.onscroll = () => {
             //     if (inner.scrollTop <= 0) {
             //         this.outerScroller = true;
