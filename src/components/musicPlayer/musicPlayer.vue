@@ -129,6 +129,7 @@ export default {
                 artist: [],
                 coverUrl: ""
             }
+            // preSongList: []
         };
     },
 
@@ -170,30 +171,26 @@ export default {
 
         // 切换歌曲
         switchMusic(order) {
-            let currentSongIndex = 0;
+            let currentSongIndex = this.songList.findIndex(item => item.id === this.currentSongDetail.id);
             if (order) {
-                this.songList.forEach((item, index) => {
-                    if (item.id === this.currentSongDetail.id) {
-                        currentSongIndex = index;
+                if (order === "next") {
+                    // next播放到最后一首了
+                    if (currentSongIndex === this.songList.length - 1) {
+                        currentSongIndex = 0;
+                    } else {
+                        currentSongIndex += 1;
                     }
-                });
-            }
-            if (order === "next") {
-                // next播放到最后一首了
-                if (currentSongIndex === this.songList.length - 1) {
-                    currentSongIndex = 0;
-                } else {
-                    currentSongIndex += 1;
+                }
+                if (order === "pre") {
+                    // pre播放到第一首了
+                    if (currentSongIndex === 0) {
+                        currentSongIndex = this.songList.length - 1;
+                    } else {
+                        currentSongIndex -= 1;
+                    }
                 }
             }
-            if (order === "pre") {
-                // pre播放到第一首了
-                if (currentSongIndex === 0) {
-                    currentSongIndex = this.songList.length - 1;
-                } else {
-                    currentSongIndex -= 1;
-                }
-            }
+
             if (this.autoPlay) {
                 this.isPlay = true;
             } else {
@@ -221,7 +218,6 @@ export default {
         },
         newSongIds: {
             handler() {
-                this.songIds = this.songIds.concat(this.newSongIds);
                 // 查询歌曲信息
                 this.$axios({
                     method: "get",
@@ -231,16 +227,30 @@ export default {
                     }
                 })
                     .then(res => {
-                        this.songList = this.songList.concat(
-                            res.data.songs.map(song => ({
-                                id: song.id,
-                                name: song.name,
-                                artist: song.ar.map(it => it.name).join("/"),
-                                coverUrl: song.al.picUrl
-                            }))
-                        );
-                        const currentSongId = res.data.songs[0].id;
-                        this.currentSongDetail = this.songList.find(item => item.id === currentSongId);
+                        // 接口查出的歌曲
+                        const newSongList = res.data.songs.map(song => ({
+                            id: song.id,
+                            name: song.name,
+                            artist: song.ar.map(it => it.name).join("/"),
+                            coverUrl: song.al.picUrl
+                        }));
+
+                        // 查找播放列表是否已有该歌曲
+                        const sameSongIds = this.$util.array.findSameEl(this.songIds, this.newSongIds);
+
+                        // 如果选择歌曲已在播放列表 将其原位置删除 删除sameSongIds
+                        this.songIds = this.$util.array.deleteEl(this.songIds, sameSongIds);
+                        this.songList = this.$util.array.deleteEl(this.songList, sameSongIds, "id");
+
+                        // 在当前播放位置插入新歌曲
+
+                        const currentSongIndex = this.songList.findIndex(item => item.id === this.currentSongDetail.id);
+                        this.songList = this.$util.array.pushIndex(currentSongIndex, this.songList, ...newSongList);
+                        this.songIds = this.$util.array.pushIndex(currentSongIndex, this.songIds, ...this.newSongIds);
+                        this.currentSongDetail = this.songList.find(item => item.id === this.newSongIds[0]);
+                        this.$emit("changeIsFullScreen", true);
+                        // 自动播放
+                        this.$refs.autioPlayer.audioPlay();
                     })
                     .catch(() => {});
             }

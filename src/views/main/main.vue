@@ -97,9 +97,7 @@ export default {
 
         // 播放弹出播放器
         showMusicPlayer(ids) {
-            this.changeIsFullScreen(true);
             // 传入播放音乐
-            debugger;
             this.newSongIds = [ids];
         }
     }
