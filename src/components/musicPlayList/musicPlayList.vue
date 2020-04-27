@@ -19,7 +19,7 @@
                     <div class="order">{{ index + 1 }}</div>
                     <div class="music-info">
                         <div class="name">{{ item.name }}</div>
-                        <div class="info">{{}}</div>
+                        <div class="info">{{ item.artistsName + "-" + item.AlbumName }}</div>
                     </div>
                 </div>
                 <div class="right">

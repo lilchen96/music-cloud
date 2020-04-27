@@ -14,13 +14,30 @@ export default {
     },
     data() {
         return {
-            // 音乐播放列表
+            // 音乐播放列表p
             musicList: []
         };
     },
 
-    created() {
+    async created() {
         const { playlistId } = this.$route.params;
+
+        debugger;
+        // 查询歌曲信息
+        const res = await this.$axios({
+            method: "get",
+            url: "getPlaylistDeatil",
+            params: {
+                id: playlistId
+            }
+        });
+
+        this.musicList = res.data.playlist.tracks.map(item => ({
+            id: item.id,
+            name: item.name,
+            artistName: item.ar.map(it => it.name).join("/"),
+            albumName: item.al.name
+        }));
     }
 };
 </script>

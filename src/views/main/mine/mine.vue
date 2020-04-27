@@ -187,11 +187,13 @@ export default {
             const myPlaylists = res.data.playlist.filter(item => !item.subscribed && item.specialType !== 5);
             const subscribedlists = res.data.playlist.filter(item => item.subscribed);
             this.myPlaylists = myPlaylists.map(item => ({
+                id: item.id,
                 coverUrl: item.coverImgUrl,
                 name: item.name,
                 count: item.trackCount
             }));
             this.subscribedlists = subscribedlists.map(item => ({
+                id: item.id,
                 coverUrl: item.coverImgUrl,
                 name: item.name,
                 count: item.trackCount
