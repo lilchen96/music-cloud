@@ -3,11 +3,12 @@
         <music-player
             style="z-index: 1;"
             :isFullScreen="isFullScreen"
+            :newSongIds="newSongIds"
             @changeIsFullScreen="changeIsFullScreen"
         ></music-player>
         <div class="fullScreen" v-if="!isFullScreen">
             <div class="router">
-                <router-view></router-view>
+                <router-view @showMusicPlayer="showMusicPlayer"></router-view>
             </div>
             <div class="bottom">
                 <bottom-bar :bottomBarOptions="bottomBarOptions"></bottom-bar>
@@ -35,6 +36,7 @@ export default {
     data() {
         return {
             isFullScreen: false, //  播放器是否全屏
+            newSongIds: [], // 新加入的歌曲
             bottomBarOptions: {
                 buttonList: [
                     {
@@ -91,6 +93,14 @@ export default {
         // 播放器缩放
         changeIsFullScreen(val) {
             this.isFullScreen = val;
+        },
+
+        // 播放弹出播放器
+        showMusicPlayer(ids) {
+            this.changeIsFullScreen(true);
+            // 传入播放音乐
+            debugger;
+            this.newSongIds = [ids];
         }
     }
 };

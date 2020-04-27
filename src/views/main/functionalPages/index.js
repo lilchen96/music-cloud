@@ -1,4 +1,4 @@
-import musicList from "@/views/functionalPages/musicList.vue";
+import musicList from "@/views/main/functionalPages/musicList.vue";
 
 export default [
     {

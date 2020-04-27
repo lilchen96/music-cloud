@@ -1,7 +1,7 @@
 <template>
     <div class="music-list-section">
         <div class=""></div>
-        <music-play-list :musicList="musicList"></music-play-list>
+        <music-play-list :musicList="musicList" @clickMusic="showMusicPlayer"></music-play-list>
     </div>
 </template>
 
@@ -20,9 +20,8 @@ export default {
     },
 
     async created() {
-        const { playlistId } = this.$route.params;
+        const { playlistId } = this.$route.query;
 
-        debugger;
         // 查询歌曲信息
         const res = await this.$axios({
             method: "get",
@@ -38,6 +37,12 @@ export default {
             artistName: item.ar.map(it => it.name).join("/"),
             albumName: item.al.name
         }));
+    },
+
+    methods: {
+        showMusicPlayer(id) {
+            this.$emit("showMusicPlayer", id);
+        }
     }
 };
 </script>

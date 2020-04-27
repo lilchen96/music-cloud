@@ -98,6 +98,11 @@ export default {
         isFullScreen: {
             type: Boolean,
             default: false
+        },
+
+        newSongIds: {
+            type: Array,
+            default: []
         }
     },
     data() {
@@ -116,7 +121,7 @@ export default {
             progressPosition: 150, // 进度条位置
             isPlay: false, // 音乐是否在播放
             animationPlayState: "paused", // 动画状态
-            songIds: ["409736433", "29789328"], // 播放队列的音乐id
+            songIds: [], // 播放队列的音乐id
             songList: [],
             currentSongDetail: {
                 id: "",
@@ -125,31 +130,6 @@ export default {
                 coverUrl: ""
             }
         };
-    },
-
-    mounted() {},
-    created() {
-        // 查询歌曲信息
-        this.$axios({
-            method: "get",
-            url: "musicDetail",
-            params: {
-                ids: this.songIds.join(",")
-            }
-        })
-            .then(res => {
-                this.songList = res.data.songs.map(song => ({
-                    id: song.id,
-                    name: song.name,
-                    artist: song.ar.map(it => it.name).join("/"),
-                    coverUrl: song.al.picUrl
-                }));
-                if (this.songList.length > 0) {
-                    const [currentSongDetail] = this.songList;
-                    this.currentSongDetail = currentSongDetail;
-                }
-            })
-            .catch(() => {});
     },
 
     computed: {
@@ -238,6 +218,32 @@ export default {
                 }
             },
             immediate: true
+        },
+        newSongIds: {
+            handler() {
+                this.songIds = this.songIds.concat(this.newSongIds);
+                // 查询歌曲信息
+                this.$axios({
+                    method: "get",
+                    url: "musicDetail",
+                    params: {
+                        ids: this.newSongIds.join(",")
+                    }
+                })
+                    .then(res => {
+                        this.songList = this.songList.concat(
+                            res.data.songs.map(song => ({
+                                id: song.id,
+                                name: song.name,
+                                artist: song.ar.map(it => it.name).join("/"),
+                                coverUrl: song.al.picUrl
+                            }))
+                        );
+                        const currentSongId = res.data.songs[0].id;
+                        this.currentSongDetail = this.songList.find(item => item.id === currentSongId);
+                    })
+                    .catch(() => {});
+            }
         }
     }
 };

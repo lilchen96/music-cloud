@@ -25,7 +25,7 @@ export default {
         click(id) {
             this.$router.push({
                 name: "musicList",
-                params: {
+                query: {
                     playlistId: id
                 }
             });
