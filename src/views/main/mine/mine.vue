@@ -228,6 +228,7 @@ export default {
         flex: 1;
         position: relative;
         height: 100%;
+        overflow-x: hidden;
         .mine-top {
             padding: 10px 18px;
             .info {

@@ -1,6 +1,6 @@
 <template>
     <div class="play-list-show">
-        <div class="play-list-item" v-for="item in list">
+        <div class="play-list-item" v-for="item in list" @click="click(item.id)">
             <div class="cover">
                 <img :src="item.coverUrl" />
             </div>
@@ -18,6 +18,17 @@ export default {
         list: {
             type: Array,
             default: []
+        }
+    },
+
+    methods: {
+        click(id) {
+            this.$router.push({
+                name: "",
+                params: {
+                    playlistId: id
+                }
+            });
         }
     }
 };

@@ -44,11 +44,9 @@ export default {
 
 <style lang="less" scoped>
 .music-module-list {
-    display: flex;
-    overflow: auto hidden;
+    overflow-x: scroll;
     .list {
-        flex: 1;
-        display: flex;
+        white-space: nowrap;
     }
     .list-item {
         position: relative;
@@ -58,7 +56,7 @@ export default {
         border-radius: 12px;
         text-align: center;
         color: #fff;
-        overflow: hidden;
+        display: inline-block;
         .background-image {
             position: absolute;
             top: 0px;
