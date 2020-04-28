@@ -1,7 +1,7 @@
 <template>
     <div class="music-play-list">
         <div class="top">
-            <div class="right">
+            <div class="right" @click="playAll">
                 <img class="icon" src="" />
                 <span class="info">播放全部</span>
                 <!-- <span class="count">{{ "(共" + otherInfo.musicCount + "首)" }}</span> -->
@@ -29,7 +29,7 @@
                 </div>
             </div>
         </div>
-        <div class="bottom"></div>
+        <!-- <div class="bottom"></div> -->
     </div>
 </template>
 
@@ -53,7 +53,14 @@ export default {
 
     methods: {
         clickMusic(id) {
-            this.$emit("clickMusic", id);
+            this.$emit("clickMusic", [id]);
+        },
+
+        playAll() {
+            this.$emit(
+                "clickMusic",
+                this.musicList.map(item => item.id)
+            );
         }
     }
 };
@@ -61,15 +68,17 @@ export default {
 
 <style lang="less" scoped>
 .music-play-list {
+    height: 100%;
     background-color: #1c1c1c;
     border-radius: 22px;
-    padding: 10px 16px;
     color: #fff;
+    display: flex;
+    flex-direction: column;
     .top {
         display: flex;
         justify-content: space-between;
         font-size: 16px;
-        padding-bottom: 10px;
+        padding: 10px 16px;
         .right {
             .icon {
             }
@@ -86,6 +95,9 @@ export default {
         }
     }
     .content {
+        padding: 10px 16px;
+        flex: 1;
+        overflow-y: scroll;
         .list-item {
             display: flex;
             justify-content: space-between;

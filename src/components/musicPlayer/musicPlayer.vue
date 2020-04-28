@@ -1,5 +1,5 @@
 <template>
-    <div class="music-player">
+    <div :style="{ height: isFullScreen ? '100%' : '' }" class="music-player">
         <audio-player
             ref="autioPlayer"
             :audioUrl="currentSongUrl"
@@ -317,7 +317,7 @@ export default {
 
     // 全屏样式
     .full-screen {
-        height: 100vh;
+        height: 100%;
         background-color: transparent;
         background-image: url("../../assets/images/play_background.png");
         background-repeat: no-repeat;

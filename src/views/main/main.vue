@@ -98,7 +98,7 @@ export default {
         // 播放弹出播放器
         showMusicPlayer(ids) {
             // 传入播放音乐
-            this.newSongIds = [ids];
+            this.newSongIds = ids;
         }
     }
 };

@@ -40,11 +40,15 @@ export default {
     },
 
     methods: {
-        showMusicPlayer(id) {
-            this.$emit("showMusicPlayer", id);
+        showMusicPlayer(ids) {
+            this.$emit("showMusicPlayer", ids);
         }
     }
 };
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.music-list-section {
+    height: 100%;
+}
+</style>
