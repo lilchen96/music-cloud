@@ -341,6 +341,7 @@ export default {
                 }
                 .music-author {
                     display: flex;
+                    justify-content: center;
                     height: 20px;
                     .icon {
                         width: 13px;
@@ -392,8 +393,8 @@ export default {
                         height: 30px;
                     }
                     .action {
-                        width: 55px;
-                        height: 55px;
+                        width: 50px;
+                        height: 50px;
                     }
                 }
             }
