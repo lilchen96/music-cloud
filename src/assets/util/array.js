@@ -30,9 +30,9 @@ export default {
     },
 
     // 向指定位置后插入元素
-    pushIndex(index, arr, obj) {
+    pushIndex(index, arr, ...rest) {
         let result = arr.concat([]);
-        arr.splice(index + 1, 0, obj);
+        arr.splice(index + 1, 0, ...rest);
         result = arr.concat([]);
         return result;
     }
