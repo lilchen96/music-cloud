@@ -8,6 +8,7 @@
                 ref="progress"
                 :duration="audioDuration"
                 :progress="audioCurrentTime"
+                @progressJump="progressJump"
             ></line-progress-bar>
             <div class="time right">{{ getAudioDuration }}</div>
         </div>
@@ -47,7 +48,8 @@ export default {
         return {
             audioDuration: 0, // audio总时间 s
             audioCurrentTime: 0, // audio已播放时间  s
-            audioUpdateInterval: {}
+            audioUpdateInterval: {},
+            timeIntervalIsRun: false
         };
     },
 
@@ -110,17 +112,41 @@ export default {
 
         // 更新audio状态 1s间隔
         timeUpdateStart() {
-            // 立即执行一次
-            this.audioCurrentTime = document.querySelector("#audio").currentTime;
-            this.audioUpdateInterval = setInterval(() => {
-                const audio = document.querySelector("#audio");
-                this.audioCurrentTime = audio.currentTime;
-            }, 1000);
+            if (!this.timeIntervalIsRun) {
+                // 立即执行一次
+                this.refreshAudioCurrentTime();
+                this.audioUpdateInterval = setInterval(() => {
+                    this.refreshAudioCurrentTime();
+                }, 1000);
+                this.timeIntervalIsRun = true;
+            }
+        },
+
+        // 刷新当前播放时间
+        refreshAudioCurrentTime() {
+            const audio = document.querySelector("#audio");
+            this.audioCurrentTime = audio.currentTime;
         },
 
         // 停止audio状态 1s间隔
         timeUpdateStop() {
             clearInterval(this.audioUpdateInterval);
+            this.timeIntervalIsRun = false;
+        },
+
+        // 音乐播放进度跳转 progress 进度
+        progressJump(progress) {
+            const time = this.audioDuration * (progress / 100);
+            // this.timeUpdateStop();
+            this.setAudioProgress(time);
+            // this.timeUpdateStart();
+        },
+
+        // 设置audio当前播放秒数
+        setAudioProgress(time) {
+            const audio = document.querySelector("#audio");
+            audio.currentTime = time; // 会进入audio onplaying事件 !!!!!!!!触发了两个定时任务 progress每秒变2次 导致进度条闪烁
+            this.audioCurrentTime = time;
         },
 
         // 格式化秒数

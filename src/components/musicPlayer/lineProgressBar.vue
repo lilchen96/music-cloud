@@ -1,5 +1,5 @@
 <template>
-    <div class="line-progress-bar">
+    <div class="line-progress-bar" @click="progressJump">
         <div class="inner-line"></div>
         <div class="outer-line" :style="{ transform: 'translateX(' + (progressPercent - 100) + '%' + ')' }"></div>
         <div
@@ -28,7 +28,8 @@ export default {
             progressPercent: 0, // 进度条 0%
             speed: 1, // 进度条速度
             interval: {}, // 定时任务
-            progressWidth: 0 // 进度条长度
+            progressWidth: 0, // 进度条长度
+            progressIsRun: false
         };
     },
 
@@ -39,22 +40,23 @@ export default {
     methods: {
         // 进度条启动
         run() {
-            this.refresh();
-            this.interval = setInterval(this.refresh, 12);
+            if (!this.progressIsRun) {
+                this.refresh();
+                this.interval = setInterval(this.refresh, 12);
+                this.progressIsRun = true;
+            }
         },
 
         // 进度条停止
         stop() {
             clearInterval(this.interval);
+            this.progressIsRun = false;
         },
 
-        //
+        // 重置进度条
         reset() {
             this.progressPercent = 0;
         },
-
-        // 进度计算
-        getTranslateX() {},
 
         // 进度条速度计算
         getSpeed(duration) {
@@ -69,6 +71,13 @@ export default {
             if (this.progressPercent === 100) {
                 clearInterval(this.interval);
             }
+        },
+
+        // 点击进度条 跳进度
+        progressJump(e) {
+            const positionX = e.offsetX;
+            this.progressPercent = (positionX / this.progressWidth) * 100;
+            this.$emit("progressJump", this.progressPercent);
         }
     },
 
