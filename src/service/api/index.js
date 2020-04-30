@@ -4,5 +4,6 @@ export default {
     musicDetail: "music/song/detail", // 歌曲详情 get
     getPlaylist: "music/user/playlist", // 获取用户歌单   get
     getPlayRecord: "music/user/record", // 获取用户最近播放   get ?uid=32953014&type=1
-    getPlaylistDeatil: "music/playlist/detail" // 获取歌单详情(包括歌曲) get ?id=24381616
+    getPlaylistDeatil: "music/playlist/detail", // 获取歌单详情(包括歌曲) get ?id=24381616
+    getLikelist: "music/likelist" // 喜欢音乐列表 get ?uid=32953014
 };

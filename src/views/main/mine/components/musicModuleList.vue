@@ -1,7 +1,7 @@
 <template>
     <div class="music-module-list">
         <div class="list">
-            <div class="list-item" v-for="item in list" :key="item.link" @click="click(item.link)">
+            <div class="list-item" v-for="item in list" :key="item.link" @click="click(item.link, item.query)">
                 <div class="item">
                     <div class="icon">
                         <img :src="item.icon" />
@@ -33,9 +33,10 @@ export default {
     },
 
     methods: {
-        click(link) {
+        click(link, query) {
             this.$router.push({
-                name: link
+                name: link,
+                query
             });
         }
     }

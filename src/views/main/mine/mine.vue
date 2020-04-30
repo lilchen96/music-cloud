@@ -42,8 +42,8 @@
 
                 <div class="functional-module">
                     <top-tab-title :tabList="playlistTabList">
-                        <paly-list-show slot="tab1" :list="myPlaylists"></paly-list-show>
-                        <paly-list-show slot="tab2" :list="subscribedlists"></paly-list-show>
+                        <play-list-show slot="tab1" :list="myPlaylists"></play-list-show>
+                        <play-list-show slot="tab2" :list="subscribedlists"></play-list-show>
                     </top-tab-title>
                 </div>
             </div>
@@ -53,7 +53,7 @@
 
 <script>
 import musicModuleList from "@/views/main/mine/components/musicModuleList.vue";
-import palyListShow from "@/views/main/mine/components/palyListShow.vue";
+import playListShow from "@/views/main/mine/components/playListShow.vue";
 import topTabTitle from "@/views/main/mine/components/topTabTitle.vue";
 
 import cloudIcon from "@/assets/images/cloud_icon.png";
@@ -66,7 +66,7 @@ import mineCover2 from "@/assets/images/mine_cover2.png";
 export default {
     components: {
         musicModuleList,
-        palyListShow,
+        playListShow,
         topTabTitle
     },
 
@@ -84,11 +84,15 @@ export default {
             // 我的音乐模块功能块
             musicModuleList: [
                 {
-                    link: "a",
+                    id: "myLike",
                     icon: heartFillIcon,
                     name: "我喜欢的音乐",
                     description: "最爱的音乐",
-                    coverImage: mineCover1
+                    coverImage: mineCover1,
+                    link: "musicList",
+                    query: {
+                        playlistId: 375170262
+                    }
                 },
                 {
                     link: "a",
@@ -184,6 +188,7 @@ export default {
                     uid: this.userId
                 }
             });
+            this.musicModuleList.find(item => item.id === "myLike").query.playlistId = res.data.playlist[0].id;
             const myPlaylists = res.data.playlist.filter(item => !item.subscribed && item.specialType !== 5);
             const subscribedlists = res.data.playlist.filter(item => item.subscribed);
             this.myPlaylists = myPlaylists.map(item => ({

@@ -21,8 +21,7 @@ export default {
 
     async created() {
         const { playlistId } = this.$route.query;
-
-        // 查询歌曲信息
+        // 查询歌单歌曲信息
         const res = await this.$axios({
             method: "get",
             url: "getPlaylistDeatil",
