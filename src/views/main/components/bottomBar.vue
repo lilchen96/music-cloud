@@ -10,6 +10,7 @@
 <script>
 export default {
     props: {
+        // 底部菜单选项
         bottomBarOptions: {
             type: Object,
             default: () => ({})
