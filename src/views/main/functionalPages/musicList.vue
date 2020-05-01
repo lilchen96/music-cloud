@@ -21,6 +21,17 @@ export default {
 
     async created() {
         const { playlistId } = this.$route.query;
+        const accountInfo = JSON.parse(localStorage.getItem("accountInfo"));
+        // 查询播放记录
+        const res1 = await this.$axios({
+            method: "get",
+            url: "getUserRecord",
+            params: {
+                uid: accountInfo.userId,
+                type: 1
+            }
+        });
+
         // 查询歌单歌曲信息
         const res = await this.$axios({
             method: "get",
