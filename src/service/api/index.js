@@ -6,5 +6,5 @@ export default {
     getPlayRecord: "music/user/record", // 获取用户最近播放   get ?uid=32953014&type=1
     getPlaylistDeatil: "music/playlist/detail", // 获取歌单详情(包括歌曲) get ?id=24381616
     getLikelist: "music/likelist", // 喜欢音乐列表 get ?uid=32953014
-    getUserRecord: "music/user/record" // 播放记录 get ?uid=32953014&type=1
+    getUserRecord: "music/user/record" // 播放记录 get ?uid=32953014&type=1 type=1 时只返回 weekData, type=0 时返回 allData
 };

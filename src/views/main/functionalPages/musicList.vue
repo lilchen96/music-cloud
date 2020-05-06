@@ -22,31 +22,38 @@ export default {
     async created() {
         const { playlistId } = this.$route.query;
         const accountInfo = JSON.parse(localStorage.getItem("accountInfo"));
-        // 查询播放记录
-        const res1 = await this.$axios({
-            method: "get",
-            url: "getUserRecord",
-            params: {
-                uid: accountInfo.userId,
-                type: 1
-            }
-        });
-
-        // 查询歌单歌曲信息
-        const res = await this.$axios({
-            method: "get",
-            url: "getPlaylistDeatil",
-            params: {
-                id: playlistId
-            }
-        });
-
-        this.musicList = res.data.playlist.tracks.map(item => ({
-            id: item.id,
-            name: item.name,
-            artistName: item.ar.map(it => it.name).join("/"),
-            albumName: item.al.name
-        }));
+        if (playlistId === "weekRecord") {
+            // 查询本周历史播放
+            const res = await this.$axios({
+                method: "get",
+                url: "getUserRecord",
+                params: {
+                    uid: accountInfo.userId,
+                    type: 1
+                }
+            });
+            this.musicList = res.data.weekData.map(({ song: item }) => ({
+                id: item.id,
+                name: item.name,
+                artistName: item.ar.map(it => it.name).join("/"),
+                albumName: item.al.name
+            }));
+        } else {
+            // 查询歌单歌曲信息
+            const res = await this.$axios({
+                method: "get",
+                url: "getPlaylistDeatil",
+                params: {
+                    id: playlistId
+                }
+            });
+            this.musicList = res.data.playlist.tracks.map(item => ({
+                id: item.id,
+                name: item.name,
+                artistName: item.ar.map(it => it.name).join("/"),
+                albumName: item.al.name
+            }));
+        }
     },
 
     methods: {

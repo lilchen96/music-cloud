@@ -95,11 +95,14 @@ export default {
                     }
                 },
                 {
-                    link: "a",
                     icon: historySacnFillIcon,
                     name: "最近播放",
                     description: "最近爱听的歌",
-                    coverImage: mineCover2
+                    coverImage: mineCover2,
+                    link: "musicList",
+                    query: {
+                        playlistId: "weekRecord"
+                    }
                 },
                 {
                     link: "a",
