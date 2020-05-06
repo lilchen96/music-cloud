@@ -20,7 +20,9 @@
                     <div class="order" :style="{ fontSize: index + 1 >= 100 ? '14px' : '18px' }">{{ index + 1 }}</div>
                     <div class="music-info">
                         <div class="name" :style="{ width: musicInfoWidth + 'px' }">{{ item.name }}</div>
-                        <div class="info">{{ item.artistName + "-" + item.albumName }}</div>
+                        <div class="info" :style="{ width: musicInfoWidth + 'px' }">
+                            {{ item.artistName + "-" + item.albumName }}
+                        </div>
                     </div>
                 </div>
                 <div class="right">
@@ -60,8 +62,7 @@ export default {
     },
 
     mounted() {
-        // TODO 获取document
-        this.musicInfoWidth = document.querySelector(".music-info").offsetWidth;
+        this.musicInfoWidth = document.querySelector(".content").offsetWidth - 10 - 16 - 25;
     },
 
     methods: {
@@ -149,8 +150,12 @@ export default {
                         text-overflow: ellipsis;
                     }
                     .info {
+                        margin-top: 3px;
                         font-size: 12px;
                         opacity: 0.8;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
                     }
                 }
             }
