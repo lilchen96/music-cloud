@@ -91,10 +91,11 @@ export default {
                     coverImage: mineCover1,
                     link: "musicList",
                     query: {
-                        playlistId: 375170262
+                        playlistId: ""
                     }
                 },
                 {
+                    id: "weekRecord",
                     icon: historySacnFillIcon,
                     name: "最近播放",
                     description: "最近爱听的歌",
@@ -105,18 +106,21 @@ export default {
                     }
                 },
                 {
+                    id: "1",
                     link: "a",
                     icon: heartFillIcon,
                     name: "我喜欢的音乐",
                     description: "最爱的音乐"
                 },
                 {
+                    id: "2",
                     link: "a",
                     icon: heartFillIcon,
                     name: "我喜欢的音乐",
                     description: "最爱的音乐"
                 },
                 {
+                    id: "3",
                     link: "a",
                     icon: heartFillIcon,
                     name: "我喜欢的音乐",
