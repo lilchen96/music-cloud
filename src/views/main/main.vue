@@ -8,7 +8,9 @@
         ></music-player>
         <div class="fullScreen" v-if="!isFullScreen">
             <div class="router">
-                <router-view @showMusicPlayer="showMusicPlayer"></router-view>
+                <transition :name="transitionName">
+                    <router-view @showMusicPlayer="showMusicPlayer"></router-view>
+                </transition>
             </div>
             <div class="bottom">
                 <bottom-bar :bottomBarOptions="bottomBarOptions"></bottom-bar>
@@ -35,6 +37,7 @@ export default {
 
     data() {
         return {
+            transitionName: "", // 路由跳转动画名称
             isFullScreen: false, //  播放器是否全屏
             newSongIds: [], // 新加入的歌曲
             bottomBarOptions: {
@@ -100,6 +103,18 @@ export default {
             // 传入播放音乐
             this.newSongIds = ids;
         }
+    },
+
+    // 监听路由变化
+    watch: {
+        $route(to, from) {
+            if (to.meta.deepth >= from.meta.deepth) {
+                this.transitionName = "slide-left";
+            }
+            if (to.meta.deepth < from.meta.deepth) {
+                this.transitionName = "slide-right";
+            }
+        }
     }
 };
 </script>
@@ -118,5 +133,23 @@ export default {
         .bottom {
         }
     }
+}
+.slide-left-enter {
+    transform: translate(100%, 0);
+}
+.slide-left-enter-to {
+    transform: translate(0, 0);
+}
+.slide-left-enter-active {
+    transition: all 350ms;
+}
+.slide-right-enter {
+    transform: translate(-100%, 0);
+}
+.slide-right-enter-to {
+    transform: translate(0, 0);
+}
+.slide-right-enter-active {
+    transition: all 350ms;
 }
 </style>

@@ -10,7 +10,8 @@
 export default {
     data() {
         return {
-            transitionName: ""
+            transitionName: "",
+            transitionMode: ""
         };
     },
     created() {},
@@ -41,6 +42,7 @@ export default {
 .slide-left-enter-active {
     transition: all 350ms;
 }
+
 .slide-right-enter {
     transform: translate(-100%, 0);
 }

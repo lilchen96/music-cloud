@@ -1,7 +1,9 @@
 import base from "@/components/base";
+import topTitle from "@/components/topTitle";
 
 const components = {
-    ...base
+    ...base,
+    topTitle
 };
 
 export default Vue => {

@@ -1,7 +1,7 @@
 <template>
     <div class="music-list-section">
-        <div class=""></div>
-        <music-play-list :musicList="musicList" @clickMusic="showMusicPlayer"></music-play-list>
+        <top-title title="歌单"></top-title>
+        <music-play-list class="content" :musicList="musicList" @clickMusic="showMusicPlayer"></music-play-list>
     </div>
 </template>
 
@@ -67,5 +67,11 @@ export default {
 <style lang="less" scoped>
 .music-list-section {
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    .content {
+        flex: 1;
+        height: 100px;
+    }
 }
 </style>

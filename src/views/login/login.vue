@@ -8,7 +8,6 @@
             <div class="button experience">
                 <baseButton :btnOptions="btnOptions2" @click="experience"></baseButton>
             </div>
-            <div></div>
         </div>
     </div>
 </template>
