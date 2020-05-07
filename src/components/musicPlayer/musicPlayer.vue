@@ -243,6 +243,7 @@ export default {
             this.refreshCircle();
         },
 
+        // 当前时间改变回调
         audioCurrentTimeChange(data) {
             this.audioCurrentTime = data;
             this.refreshCircle();
