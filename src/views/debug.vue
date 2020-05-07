@@ -1,14 +1,17 @@
 <template>
-    <music-module-list :list="list"></music-module-list>
+    <!-- <music-module-list :list="list"></music-module-list> -->
+    <circle-progress-bar></circle-progress-bar>
 </template>
 
 <script>
 import musicModuleList from "@/views/main/mine/components/musicModuleList.vue";
+import circleProgressBar from "@/components/musicPlayer/circleProgressBar.vue";
 import heartFillIcon from "@/assets/images/heart_fill_icon.png";
 
 export default {
     components: {
-        musicModuleList
+        musicModuleList,
+        circleProgressBar
     },
     data() {
         return {

@@ -15,7 +15,7 @@
                 <img
                     class="cover-image cover-image-animation"
                     :style="{ animationPlayState: animationPlayState }"
-                    :src="currentSongDetail.coverUrl"
+                    :src="currentSongDetail.coverUrl || icons.cdIcon"
                     @click="changeIsFullScreen"
                 />
             </div>
@@ -48,7 +48,7 @@
                         <img
                             class="cover-image cover-image-animation"
                             :style="{ animationPlayState: animationPlayState }"
-                            :src="currentSongDetail.coverUrl"
+                            :src="currentSongDetail.coverUrl || icons.cdIcon"
                         />
                     </div>
                 </div>
@@ -86,6 +86,7 @@ import playActionIcon from "@/assets/images/play_action_icon.png";
 import pauseActionIcon from "@/assets/images/pause_action_icon.png";
 import nextSongIcon from "@/assets/images/next_song_icon.png";
 import preSongIcon from "@/assets/images/pre_song_icon.png";
+import cdIcon from "@/assets/images/cd_icon.png";
 
 import audioPlayer from "@/components/musicPlayer/audioPlayer";
 
@@ -114,7 +115,8 @@ export default {
                 heartIcon,
                 heartFillIcon,
                 nextSongIcon,
-                preSongIcon
+                preSongIcon,
+                cdIcon
             },
             animationName: "full", // 缩放 动画名称
             autoPlay: false,

@@ -26,7 +26,6 @@
 <script>
 export default {
     props: {
-        // list
         list: {
             type: Array,
             default: []
