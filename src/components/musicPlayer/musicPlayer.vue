@@ -238,6 +238,7 @@ export default {
             this.$emit("changeIsFullScreen", !this.isFullScreen);
         },
 
+        // 总时间改变回调
         audioDurationChange(data) {
             this.audioDuration = data;
             this.refreshCircle();
