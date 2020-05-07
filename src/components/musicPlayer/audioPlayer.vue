@@ -160,6 +160,21 @@ export default {
             }
             return timeArr.join(":");
         }
+    },
+
+    watch: {
+        audioDuration: {
+            handler() {
+                this.$emit("audio-duration-change", this.audioDuration);
+            },
+            immediate: true
+        },
+        audioCurrentTime: {
+            handler() {
+                this.$emit("audio-current-time-change", this.audioCurrentTime);
+            },
+            immediate: true
+        }
     }
 };
 </script>

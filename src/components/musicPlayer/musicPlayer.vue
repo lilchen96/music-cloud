@@ -9,9 +9,19 @@
             @on-audio-play="onAudioPlay"
             @on-audio-pause="onAudioPause"
             @on-audio-end="onAudioEnd"
+            @audio-duration-change="audioDurationChange"
+            @audio-current-time-change="audioCurrentTimeChange"
         ></audio-player>
         <transition name="mini" mode="out-in">
             <div class="mini" v-if="!isFullScreen">
+                <circle-progress-bar
+                    ref="circle"
+                    direction="clockwise"
+                    :circleOptions="circleOptions"
+                    :playState="circlePlayState"
+                    :current="circleCurrent"
+                    :duration="circleDuration"
+                ></circle-progress-bar>
                 <img
                     class="cover-image cover-image-animation"
                     :style="{ animationPlayState: animationPlayState }"
@@ -89,10 +99,12 @@ import preSongIcon from "@/assets/images/pre_song_icon.png";
 import cdIcon from "@/assets/images/cd_icon.png";
 
 import audioPlayer from "@/components/musicPlayer/audioPlayer";
+import circleProgressBar from "@/components/musicPlayer/circleProgressBar";
 
 export default {
     components: {
-        audioPlayer
+        audioPlayer,
+        circleProgressBar
     },
     props: {
         // 是否全屏
@@ -124,14 +136,34 @@ export default {
             isPlay: false, // 音乐是否在播放
             animationPlayState: "paused", // 动画状态
             songIds: [], // 播放队列的音乐id
+            // 播放队列的音乐
             songList: [],
+            // 当前播放歌曲
             currentSongDetail: {
                 id: "",
                 name: "",
                 artist: [],
                 coverUrl: ""
-            }
-            // preSongList: []
+            },
+            // 音乐总时间
+            audioDuration: 0,
+            // 当前播放时间
+            audioCurrentTime: 0,
+            // 环形进度条
+            circleOptions: {
+                width: 36,
+                height: 36,
+                borderWidth: 2,
+                borderColor: "#fff",
+                backGroundColor: "grey"
+            },
+
+            // 环形进度条状态
+            circlePlayState: "pause",
+            // 环形进度条当前时间 s
+            circleCurrent: 0,
+            // 环形进度条总时间 s
+            circleDuration: 0
         };
     },
 
@@ -204,16 +236,43 @@ export default {
         // 缩放与展示播放器
         changeIsFullScreen() {
             this.$emit("changeIsFullScreen", !this.isFullScreen);
+        },
+
+        audioDurationChange(data) {
+            this.audioDuration = data;
+            this.refreshCircle();
+        },
+
+        audioCurrentTimeChange(data) {
+            // if (data === 0) {
+            //     this.refreshCircle();
+            // }
+            this.audioCurrentTime = data;
+            this.refreshCircle();
+        },
+
+        // 刷新环形播放器状态
+        refreshCircle() {
+            this.circleCurrent = this.audioCurrentTime;
+            this.circleDuration = this.audioDuration;
         }
     },
 
     watch: {
+        isFullScreen: {
+            handler() {
+                this.refreshCircle();
+            },
+            immediate: true
+        },
         isPlay: {
             handler() {
                 if (this.isPlay) {
                     this.animationPlayState = "running";
+                    this.circlePlayState = "running";
                 } else {
                     this.animationPlayState = "paused";
+                    this.circlePlayState = "paused";
                 }
             },
             immediate: true
@@ -311,9 +370,12 @@ export default {
         right: 10px;
         top: 10px;
         .cover-image {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
+            position: absolute;
+            top: 4px;
+            left: 4px;
         }
     }
 
