@@ -244,9 +244,6 @@ export default {
         },
 
         audioCurrentTimeChange(data) {
-            // if (data === 0) {
-            //     this.refreshCircle();
-            // }
             this.audioCurrentTime = data;
             this.refreshCircle();
         },
