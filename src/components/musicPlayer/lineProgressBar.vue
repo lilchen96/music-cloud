@@ -1,6 +1,6 @@
 <template>
-    <div class="line-progress-bar" @click="progressJump">
-        <div class="inner-line"></div>
+    <div class="line-progress-bar">
+        <div class="inner-line" @click="progressJump"></div>
         <div class="outer-line" :style="{ transform: 'translateX(' + (progressPercent - 100) + '%' + ')' }"></div>
         <div
             class="draggle-point"
@@ -68,14 +68,14 @@ export default {
         // 刷新进度条
         refresh() {
             this.progressPercent += this.speed;
-            if (this.progressPercent === 100) {
+            if (100 - this.progressPercent <= this.speed) {
+                this.progressPercent = 100;
                 clearInterval(this.interval);
             }
         },
 
         // 点击进度条 跳进度
         progressJump(e) {
-            debugger;
             const positionX = e.offsetX;
             this.progressPercent = (positionX / this.progressWidth) * 100;
             this.$emit("progressJump", this.progressPercent);

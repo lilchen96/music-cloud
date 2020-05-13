@@ -186,6 +186,7 @@ export default {
         width: 100%;
         display: flex;
         justify-content: center;
+        z-index: 1;
         .time {
             color: #9e9e9e;
             font-size: 10px;
