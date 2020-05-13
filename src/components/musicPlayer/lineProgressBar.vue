@@ -21,6 +21,11 @@ export default {
         progress: {
             type: Number,
             default: 0
+        },
+        // 是否可以跳进度
+        canJump: {
+            type: Boolean,
+            default: true
         }
     },
     data() {

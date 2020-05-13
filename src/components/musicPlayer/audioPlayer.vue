@@ -8,6 +8,7 @@
                 ref="progress"
                 :duration="audioDuration"
                 :progress="audioCurrentTime"
+                :canJump="true"
                 @progressJump="progressJump"
             ></line-progress-bar>
             <div class="time right">{{ getAudioDuration }}</div>
