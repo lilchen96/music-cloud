@@ -50,6 +50,7 @@ export default {
             audioDuration: 0, // audio总时间 s
             audioCurrentTime: 0, // audio已播放时间  s
             audioUpdateInterval: {},
+            // 定时任务是否开启
             timeIntervalIsRun: false
         };
     },

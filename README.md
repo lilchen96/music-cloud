@@ -1,4 +1,5 @@
 # music-cloud
+## Web music player based on Vue and NeteaseCloudMusicApi
 
 ## Project setup
 ```
