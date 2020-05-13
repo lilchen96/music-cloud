@@ -75,6 +75,7 @@ export default {
 
         // 点击进度条 跳进度
         progressJump(e) {
+            debugger;
             const positionX = e.offsetX;
             this.progressPercent = (positionX / this.progressWidth) * 100;
             this.$emit("progressJump", this.progressPercent);

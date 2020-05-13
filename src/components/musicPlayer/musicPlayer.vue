@@ -32,6 +32,10 @@
         </transition>
         <transition name="full-screen" mode="out-in">
             <div class="full-screen" v-if="isFullScreen">
+                <div
+                    class="background-image"
+                    :style="{ backgroundImage: 'url(' + currentSongDetail.coverUrl + ')' }"
+                ></div>
                 <div class="top">
                     <div class="back-btn icon-outer">
                         <img class="icon" :src="icons.backIcon" @click="changeIsFullScreen" />
@@ -380,19 +384,30 @@ export default {
 
     // 全屏样式
     .full-screen {
+        position: relative;
         height: 100%;
-        background-color: transparent;
-        background-image: url("../../assets/images/play_background.png");
-        background-repeat: no-repeat;
-        background-size: cover;
         display: flex;
         flex-direction: column;
         padding: 0px 10px;
+        .background-image {
+            position: absolute;
+            height: 50%;
+            width: 100%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            -webkit-filter: blur(20px);
+            -moz-filter: blur(20px);
+            -ms-filter: blur(20px);
+            -o-filter: blur(20px);
+            filter: blur(20px);
+            opacity: 0.4;
+        }
         .top {
             margin-top: 10px;
             display: flex;
             justify-content: space-between;
             color: #fff;
+            z-index: 0;
             .back-btn {
             }
             .music-title {
@@ -427,6 +442,7 @@ export default {
             display: flex;
             flex-direction: column;
             justify-content: center;
+            z-index: 0;
             .music-cover {
                 text-align: center;
                 .cover-image {
@@ -438,6 +454,7 @@ export default {
         }
         .bottom {
             height: 220px;
+            z-index: 0;
             .top-operations {
                 display: flex;
                 justify-content: center;
