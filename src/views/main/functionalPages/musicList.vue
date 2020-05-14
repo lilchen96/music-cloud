@@ -139,7 +139,7 @@ export default {
     .paly-list-info {
         padding: 20px 10px;
         display: flex;
-        z-index: 1;
+        z-index: 0;
         .cover {
             img {
                 width: 135px;

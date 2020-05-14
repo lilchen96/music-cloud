@@ -47,7 +47,7 @@ export default {
                         url: discoverIcon,
                         onClick: () => {
                             this.$router.push({
-                                name: ""
+                                name: "discovery"
                             });
                         }
                     },
