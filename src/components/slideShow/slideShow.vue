@@ -114,9 +114,7 @@ export default {
             }
             this.translateX = 0;
         }
-    },
-
-    watch: {}
+    }
 };
 </script>
 
