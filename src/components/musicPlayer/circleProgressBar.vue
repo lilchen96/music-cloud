@@ -113,8 +113,6 @@ export default {
                         }
                     }
                 }
-                console.log(name, result.transform);
-                console.log(name, result.animationDuration);
                 return result;
             };
         }
@@ -126,8 +124,6 @@ export default {
             handler() {
                 this.startDegree = (this.current / this.duration) * 360;
                 this.rest = this.duration - this.current;
-                console.log(this.startDegree);
-                console.log("rest", this.rest);
             },
             immediate: true
         },
