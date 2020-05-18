@@ -81,7 +81,6 @@ export default {
                 x: e.changedTouches[0].pageX,
                 y: e.changedTouches[0].pageY
             };
-            // 滑动位移
         },
         touchend() {
             const touchTime = new Date().getTime() - this.touchstartTime;
