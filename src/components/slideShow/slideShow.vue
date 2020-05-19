@@ -29,6 +29,7 @@
 <script>
 export default {
     props: {
+        // 数据源
         imageList: {
             type: Array,
             default: () => {
@@ -38,13 +39,25 @@ export default {
                     "http://p1.music.126.net/gfn8202mSvEStU1vBBYyXg==/109951164989041192.jpg"
                 ];
             }
-        }
+        },
 
-        // // 是否循环
-        // loop: {
-        //     type: Boolean,
-        //     default: true
-        // }
+        // 是否循环
+        loop: {
+            type: Boolean,
+            default: true
+        },
+
+        // 是否自动播放
+        autoPlay: {
+            type: Boolean,
+            default: false
+        },
+
+        // 自动播放间隔时间 s
+        interval: {
+            type: Number,
+            default: 5
+        }
     },
     data() {
         return {
@@ -76,7 +89,10 @@ export default {
             containerHeight: 100,
 
             // 导航点宽度
-            guideWidth: 10
+            guideWidth: 10,
+
+            // 自动播放
+            autoPlayInterval: null
         };
     },
     computed: {
@@ -139,6 +155,16 @@ export default {
             this.isTransition = false;
         },
         touchmove(e) {
+            // 不循环的边界判断 锁死
+            if (
+                (!this.loop && this.active === 0 && e.changedTouches[0].pageX - this.currentPosition.x >= 0) ||
+                (!this.loop &&
+                    this.active === this.list.length - 1 &&
+                    e.changedTouches[0].pageX - this.currentPosition.x <= 0)
+            ) {
+                return;
+            }
+
             this.translateX += e.changedTouches[0].pageX - this.currentPosition.x;
             this.currentPosition = {
                 x: e.changedTouches[0].pageX,
@@ -159,20 +185,7 @@ export default {
             }
             // 滑动速度快 直接切换图片 速度慢 过50%切换 不过50%不切换
             if (touchTime <= 200 || Math.abs(this.translateX) > width * 0.5) {
-                if (this.direction === "left") {
-                    if (this.active === this.list.length - 1) {
-                        this.active = 0;
-                    } else {
-                        this.active += 1;
-                    }
-                }
-                if (this.direction === "right") {
-                    if (this.active === 0) {
-                        this.active = this.list.length - 1;
-                    } else {
-                        this.active -= 1;
-                    }
-                }
+                this.active = this.getNextActive(this.direction);
             } else {
                 // 图片回弹时 方向实际是改变的
                 this.direction = this.direction === "left" ? "right" : "left";
@@ -198,6 +211,35 @@ export default {
             }
             neighbor.center = index;
             return neighbor;
+        },
+
+        // left or right
+        getNextActive(direction) {
+            let result = direction === "left" ? this.active + 1 : this.active - 1;
+            if (this.active === 0 && direction === "right") {
+                result = this.loop ? this.list.length - 1 : 0;
+            }
+            if (this.active === this.list.length - 1 && direction === "left") {
+                result = this.loop ? 0 : this.list.length - 1;
+            }
+            return result;
+        }
+    },
+
+    watch: {
+        autoPlay: {
+            handler() {
+                if (this.autoPlay) {
+                    setInterval(() => {
+                        this.isTransition = true;
+                        this.direction = "left";
+                        this.active = this.getNextActive("left");
+                    }, this.interval * 1000);
+                } else if (this.autoPlayInterval) {
+                    clearInterval(this.autoPlayInterval);
+                }
+            },
+            immediate: true
         }
     }
 };
