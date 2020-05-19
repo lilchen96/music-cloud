@@ -1,18 +1,28 @@
 <template>
-    <div class="slide-show">
+    <div class="slide-show" :style="{ height: containerHeight + 'px' }">
         <div
             v-for="(item, index) in list"
             :key="item"
             class="image-item"
             :class="getClassName(index)"
-            :style="{ transform: getTranslateStyle(index) + ' translateX(' + translateX + 'px)' }"
+            :style="{
+                width: containerWidth + 'px',
+                transform: getTranslateStyle(index) + ' translateX(' + translateX + 'px)'
+            }"
             @touchstart="touchstart"
             @touchmove="touchmove"
             @touchend="touchend"
         >
             <img class="image" :src="item" />
         </div>
-        <div class="guide-point"></div>
+        <div class="guide-point" :style="{ left: (containerWidth - guideWidth) / 2 + 'px' }">
+            <div
+                v-for="(item, index) in list"
+                :key="item"
+                class="point-item"
+                :class="active === index ? 'active' : ''"
+            ></div>
+        </div>
     </div>
 </template>
 
@@ -57,7 +67,16 @@ export default {
             touchstartTime: 0,
 
             // 是否需要过渡动画 touchend结算时需要过渡动画
-            isTransition: false
+            isTransition: false,
+
+            // 外容器宽度
+            containerWidth: 200,
+
+            // 外容器高度
+            containerHeight: 100,
+
+            // 导航点宽度
+            guideWidth: 10
         };
     },
     computed: {
@@ -99,6 +118,16 @@ export default {
                 return className;
             };
         }
+    },
+    mounted() {
+        // 计算容器宽度
+        this.containerWidth = document.querySelector(".slide-show").clientWidth;
+        // 计算容器高度
+        document.querySelector(".image").onload = () => {
+            this.containerHeight = document.querySelector(".image-item").clientHeight;
+        };
+        // 计算导航点宽度
+        this.guideWidth = document.querySelector(".guide-point").clientWidth;
     },
     methods: {
         touchstart(e) {
@@ -177,12 +206,31 @@ export default {
 <style lang="less" scoped>
 .slide-show {
     position: relative;
+    width: 100%;
     .image-item {
         position: absolute;
         width: 100%;
         text-align: center;
         .image {
             width: calc(100% - 32px);
+        }
+    }
+    .guide-point {
+        position: absolute;
+        bottom: 8px;
+        display: flex;
+        justify-content: center;
+        .point-item {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #fff;
+            margin: 0px 2px;
+            opacity: 0.6;
+        }
+        .active {
+            opacity: 1;
+            background-color: red;
         }
     }
     .translate-transition {
