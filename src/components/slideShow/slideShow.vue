@@ -50,7 +50,7 @@ export default {
         // 是否自动播放
         autoPlay: {
             type: Boolean,
-            default: false
+            default: true
         },
 
         // 自动播放间隔时间 s
@@ -147,6 +147,7 @@ export default {
     },
     methods: {
         touchstart(e) {
+            this.autoPlayPause();
             this.touchstartTime = new Date().getTime();
             this.currentPosition = {
                 x: e.changedTouches[0].pageX,
@@ -191,6 +192,7 @@ export default {
                 this.direction = this.direction === "left" ? "right" : "left";
             }
             this.translateX = 0;
+            this.autoPlayPlay();
         },
 
         getNeighbor(index, list) {
@@ -223,6 +225,22 @@ export default {
                 result = this.loop ? 0 : this.list.length - 1;
             }
             return result;
+        },
+
+        // 自动播放暂停
+        autoPlayPause() {
+            if (this.autoPlayInterval) {
+                clearInterval(this.autoPlayInterval);
+            }
+        },
+
+        // 自动播放开始
+        autoPlayPlay() {
+            this.autoPlayInterval = setInterval(() => {
+                this.isTransition = true;
+                this.direction = "left";
+                this.active = this.getNextActive("left");
+            }, this.interval * 1000);
         }
     },
 
@@ -230,13 +248,9 @@ export default {
         autoPlay: {
             handler() {
                 if (this.autoPlay) {
-                    setInterval(() => {
-                        this.isTransition = true;
-                        this.direction = "left";
-                        this.active = this.getNextActive("left");
-                    }, this.interval * 1000);
-                } else if (this.autoPlayInterval) {
-                    clearInterval(this.autoPlayInterval);
+                    this.autoPlayPlay();
+                } else {
+                    this.autoPlayPause();
                 }
             },
             immediate: true
