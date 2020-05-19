@@ -7,7 +7,7 @@
             :class="getClassName(index)"
             :style="{
                 width: containerWidth + 'px',
-                transform: getTranslateStyle(index) + ' translateX(' + translateX + 'px)'
+                transform: getTranslateStyle(index) + getTranslateXStyle(index)
             }"
             @touchstart="touchstart"
             @touchmove="touchmove"
@@ -32,13 +32,7 @@ export default {
         // 数据源
         imageList: {
             type: Array,
-            default: () => {
-                return [
-                    "http://p1.music.126.net/SAUL6U5oQM715WGye79VLQ==/109951164988980681.jpg",
-                    "http://p1.music.126.net/qV3v_0FRCRLhNY1a_644lA==/109951164989080106.jpg",
-                    "http://p1.music.126.net/gfn8202mSvEStU1vBBYyXg==/109951164989041192.jpg"
-                ];
-            }
+            default: []
         },
 
         // 是否循环
@@ -50,7 +44,7 @@ export default {
         // 是否自动播放
         autoPlay: {
             type: Boolean,
-            default: true
+            default: false
         },
 
         // 自动播放间隔时间 s
@@ -67,7 +61,7 @@ export default {
             // 当前图片序号
             active: 0,
 
-            // 图片整体的横向偏移量
+            // 图片整体的横向偏移s量
             translateX: 0,
 
             // 当前触摸点坐标
@@ -114,6 +108,18 @@ export default {
             };
         },
 
+        getTranslateXStyle() {
+            return index => {
+                let translateXStyle = "";
+                const neighbor = this.getNeighbor(this.active, this.list);
+
+                if (index === neighbor.center || index === neighbor.right || index === neighbor.left) {
+                    translateXStyle = ` translateX(${this.translateX}px)`;
+                }
+                return translateXStyle;
+            };
+        },
+
         // 是否需要过渡动画 left:center和left需要动画  right:center和right需要动画
         getClassName() {
             return index => {
@@ -137,13 +143,13 @@ export default {
     },
     mounted() {
         // 计算容器宽度
-        this.containerWidth = document.querySelector(".slide-show").clientWidth;
+        // this.containerWidth = document.querySelector(".slide-show").clientWidth;
         // 计算容器高度
-        document.querySelector(".image").onload = () => {
-            this.containerHeight = document.querySelector(".image-item").clientHeight;
-        };
+        // document.querySelector(".image").onload = () => {
+        //     this.containerHeight = document.querySelector(".image-item").clientHeight;
+        // };
         // 计算导航点宽度
-        this.guideWidth = document.querySelector(".guide-point").clientWidth;
+        // this.guideWidth = document.querySelector(".guide-point").clientWidth;
     },
     methods: {
         touchstart(e) {

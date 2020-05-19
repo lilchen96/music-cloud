@@ -1,7 +1,16 @@
-<template> </template>
+<template>
+    <div class="discovery-section">
+        <slide-show :imageList="bannerList" loop></slide-show>
+    </div>
+</template>
 
 <script>
+import slideShow from "@/components/slideShow";
+
 export default {
+    components: {
+        slideShow
+    },
     data() {
         return {
             bannerList: []
@@ -23,6 +32,7 @@ export default {
             ]);
             const [{ data: bannerRes }] = await requests;
             this.bannerList = bannerRes.banners.map(it => it.imageUrl);
+            console.log(this.bannerList);
         }
     }
 };
