@@ -58,9 +58,7 @@ export default {
             this.bannerList = bannerRes.banners.map(it => it.imageUrl);
         },
 
-        searchInputChange(value) {
-            console.log(value);
-        }
+        searchInputChange(value) {}
     }
 };
 </script>
