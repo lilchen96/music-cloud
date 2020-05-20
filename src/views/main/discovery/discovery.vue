@@ -58,7 +58,9 @@ export default {
             this.bannerList = bannerRes.banners.map(it => it.imageUrl);
         },
 
-        searchInputChange(value) {}
+        searchInputChange(value) {
+            // 搜索接口value
+        }
     }
 };
 </script>
