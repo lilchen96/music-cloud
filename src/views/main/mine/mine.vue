@@ -233,9 +233,10 @@ export default {
         opacity: 0.4;
     }
     .top-left {
+        height: 52px;
         position: relative;
-        padding: 10px 0px 6px 18px;
         .icon {
+            padding: 10px 0px 6px 18px;
         }
     }
     .section {

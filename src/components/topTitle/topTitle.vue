@@ -4,7 +4,6 @@
             <img :src="backIcon" />
         </div>
         <div class="title">{{ title }}</div>
-        <div class="empty"></div>
     </div>
 </template>
 
@@ -34,7 +33,7 @@ export default {
 
 <style lang="less" scoped>
 .top-title {
-    width: 100%;
+    width: calc(100% - 52px);
     height: 52px;
     padding-left: 10px;
     display: flex;
@@ -49,13 +48,12 @@ export default {
         }
     }
     .title {
+        font-size: 19px;
+        flex: 1;
+        text-align: center;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        font-size: 19px;
-    }
-    .empty {
-        width: 52px;
     }
 }
 </style>

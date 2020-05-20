@@ -7,7 +7,8 @@
             :class="getClassName(index)"
             :style="{
                 width: containerWidth + 'px',
-                transform: getTranslateStyle(index) + getTranslateXStyle(index)
+                transform: getTranslateStyle(index) + getTranslateXStyle(index),
+                zIndex: getZIndexStyle(index)
             }"
             @touchstart="touchstart"
             @touchmove="touchmove"
@@ -56,7 +57,7 @@ export default {
     data() {
         return {
             // 图片列表
-            list: this.imageList,
+            list: [],
 
             // 当前图片序号
             active: 0,
@@ -119,6 +120,17 @@ export default {
                 return translateXStyle;
             };
         },
+        getZIndexStyle() {
+            return index => {
+                let zIndex = -1;
+                const neighbor = this.getNeighbor(this.active, this.list);
+
+                if (index === neighbor.center || index === neighbor.right || index === neighbor.left) {
+                    zIndex = 0;
+                }
+                return zIndex;
+            };
+        },
 
         // 是否需要过渡动画 left:center和left需要动画  right:center和right需要动画
         getClassName() {
@@ -143,13 +155,13 @@ export default {
     },
     mounted() {
         // 计算容器宽度
-        // this.containerWidth = document.querySelector(".slide-show").clientWidth;
+        this.containerWidth = document.querySelector(".slide-show").clientWidth;
         // 计算容器高度
-        // document.querySelector(".image").onload = () => {
-        //     this.containerHeight = document.querySelector(".image-item").clientHeight;
-        // };
+        document.querySelector(".image").onload = () => {
+            this.containerHeight = document.querySelector(".image-item").clientHeight;
+        };
         // 计算导航点宽度
-        // this.guideWidth = document.querySelector(".guide-point").clientWidth;
+        this.guideWidth = document.querySelector(".guide-point").clientWidth;
     },
     methods: {
         touchstart(e) {
@@ -260,6 +272,13 @@ export default {
                 }
             },
             immediate: true
+        },
+
+        imageList: {
+            handler() {
+                this.list = this.imageList;
+            },
+            immediate: true
         }
     }
 };
@@ -273,6 +292,7 @@ export default {
         position: absolute;
         width: 100%;
         text-align: center;
+        z-index: -1;
         .image {
             width: calc(100% - 32px);
         }
