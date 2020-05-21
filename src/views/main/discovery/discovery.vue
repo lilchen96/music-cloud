@@ -11,7 +11,7 @@
             ></base-input>
         </div>
         <div class="content">
-            <slide-show v-if="bannerList.length > 0" :imageList="bannerList"></slide-show>
+            <slide-show :imageList="bannerList" autoPlay loop></slide-show>
         </div>
     </div>
 </template>

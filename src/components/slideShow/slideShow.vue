@@ -3,7 +3,7 @@
         <div
             v-for="(item, index) in list"
             :key="item"
-            class="image-item"
+            class="slide-show-image-item"
             :class="getClassName(index)"
             :style="{
                 width: containerWidth + 'px',
@@ -14,7 +14,7 @@
             @touchmove="touchmove"
             @touchend="touchend"
         >
-            <img class="image" :src="item" />
+            <img class="slide-show-image" :src="item" />
         </div>
         <div class="guide-point" :style="{ left: (containerWidth - guideWidth) / 2 + 'px' }">
             <div
@@ -45,7 +45,7 @@ export default {
         // 是否自动播放
         autoPlay: {
             type: Boolean,
-            default: false
+            default: true
         },
 
         // 自动播放间隔时间 s
@@ -153,16 +153,7 @@ export default {
             };
         }
     },
-    mounted() {
-        // 计算容器宽度
-        this.containerWidth = document.querySelector(".slide-show").clientWidth;
-        // 计算容器高度
-        document.querySelector(".image").onload = () => {
-            this.containerHeight = document.querySelector(".image-item").clientHeight;
-        };
-        // 计算导航点宽度
-        this.guideWidth = document.querySelector(".guide-point").clientWidth;
-    },
+    mounted() {},
     methods: {
         touchstart(e) {
             this.autoPlayPause();
@@ -193,8 +184,6 @@ export default {
         touchend() {
             const touchTime = new Date().getTime() - this.touchstartTime;
             this.isTransition = true;
-            const width = document.querySelector(".image-item").clientWidth;
-
             // 判断滑动方向
             if (this.translateX < -10) {
                 this.direction = "left";
@@ -203,7 +192,7 @@ export default {
                 this.direction = "right";
             }
             // 滑动速度快 直接切换图片 速度慢 过50%切换 不过50%不切换
-            if (touchTime <= 200 || Math.abs(this.translateX) > width * 0.5) {
+            if (touchTime <= 200 || Math.abs(this.translateX) > this.containerWidth * 0.5) {
                 this.active = this.getNextActive(this.direction);
             } else {
                 // 图片回弹时 方向实际是改变的
@@ -277,6 +266,17 @@ export default {
         imageList: {
             handler() {
                 this.list = this.imageList;
+                if (this.list.length > 0) {
+                    this.$nextTick(() => {
+                        this.containerWidth = document.querySelector(".slide-show").clientWidth;
+                        // 计算容器高度
+                        document.querySelector(".slide-show-image").onload = () => {
+                            this.containerHeight = document.querySelector(".slide-show-image-item").clientHeight;
+                        };
+                        // 计算导航点宽度
+                        this.guideWidth = document.querySelector(".guide-point").clientWidth;
+                    });
+                }
             },
             immediate: true
         }
@@ -288,12 +288,12 @@ export default {
 .slide-show {
     position: relative;
     width: 100%;
-    .image-item {
+    .slide-show-image-item {
         position: absolute;
         width: 100%;
         text-align: center;
         z-index: -1;
-        .image {
+        .slide-show-image {
             width: calc(100% - 32px);
         }
     }
