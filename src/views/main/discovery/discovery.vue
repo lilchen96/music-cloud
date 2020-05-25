@@ -1,16 +1,11 @@
 <template>
     <div class="discovery-section">
-        <div class="search-title">
-            <div class="image">
-                <img :src="icons.cloudIcon" />
-            </div>
-            <base-input
-                class="search-input"
-                :inputOptions="searchInputOptions"
-                @on-change="searchInputChange"
-            ></base-input>
-        </div>
-        <div class="content">
+        <top-search
+            :icon="icons.cloudIcon"
+            @show-search-section="showSearchSection"
+            @hide-search-section="hideSearchSection"
+        ></top-search>
+        <div v-if="contentVisible" class="content">
             <slide-show :imageList="bannerList" autoPlay loop></slide-show>
         </div>
     </div>
@@ -18,25 +13,26 @@
 
 <script>
 import slideShow from "@/components/slideShow";
+import topSearch from "@/views/main/components/topSearch.vue";
 
 import cloudIcon from "@/assets/images/cloud_icon.png";
-import searchIcon from "@/assets/images/search_icon.png";
 
 export default {
     components: {
-        slideShow
+        slideShow,
+        topSearch
     },
     data() {
         return {
             icons: { cloudIcon },
+            // 轮播图
             bannerList: [],
-            searchInputOptions: {
-                value: "",
-                type: "text",
-                placeholder: "请输入搜索信息",
-                style: "icon",
-                icon: searchIcon
-            }
+            // 默认搜索信息
+            defaultSearch: {
+                realkeyword: "",
+                showKeyword: ""
+            },
+            contentVisible: true
         };
     },
 
@@ -55,11 +51,16 @@ export default {
                 })
             ]);
             const [{ data: bannerRes }] = await requests;
+
+            // 轮播图
             this.bannerList = bannerRes.banners.map(it => it.imageUrl);
         },
 
-        searchInputChange(value) {
-            // 搜索接口value
+        showSearchSection() {
+            this.contentVisible = false;
+        },
+        hideSearchSection() {
+            this.contentVisible = true;
         }
     }
 };
@@ -67,23 +68,5 @@ export default {
 
 <style lang="less" scoped>
 .discovery-section {
-    .search-title {
-        width: calc(100% - 52px);
-        height: 52px;
-        padding-left: 10px;
-        display: flex;
-        .image {
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-        }
-        .search-input {
-            height: 32px;
-            flex: 1;
-            display: flex;
-            margin: 0 16px;
-            margin-top: 12px;
-        }
-    }
 }
 </style>

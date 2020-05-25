@@ -1,5 +1,5 @@
 <template>
-    <div class="">
+    <div class="base-input-section">
         <input
             v-if="inputOptions.style === 'line'"
             class="base-input"
@@ -9,7 +9,7 @@
             v-model="inputOptions.value"
             :placeholder="inputOptions.placeholder"
             @click="changeType"
-            @change="inputChange(inputOptions.value)"
+            @input="inputChange(inputOptions.value)"
         />
         <div v-if="inputOptions.style === 'icon'" class="icon-section">
             <div class="icon"><img class="icon" :src="inputOptions.icon" /></div>
@@ -17,10 +17,11 @@
                 class="base-input"
                 autocomplete="off"
                 :type="inputType"
+                :disabled="inputOptions.disabled"
                 :class="inputClass"
                 v-model="inputOptions.value"
                 :placeholder="inputOptions.placeholder"
-                @change="inputChange(inputOptions.value)"
+                @input="inputChange(inputOptions.value)"
             />
         </div>
     </div>
@@ -74,42 +75,49 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.base-input {
-    width: 100%;
-    outline: none;
-}
-.line-style {
-    border: 0px;
-    border-bottom: 0.5px solid #666666;
-    color: #fff;
-    font-size: 16px;
-    padding: 4px 6px;
-    background-color: transparent;
-    border-radius: 0px;
-}
-.icon-section {
+.base-input-section {
     height: 100%;
-    display: flex;
-    .icon {
-        width: 30px;
-        padding-left: 10px;
-        border-radius: 50px 0 0 50px;
-        background-color: #292929;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        img {
-            width: 18px;
-            height: 18px;
-        }
+    width: 100%;
+    .base-input {
+        width: 100%;
+        outline: none;
     }
-    .icon-style {
-        border: 0;
-        border-radius: 0 50px 50px 0;
-        background-color: #292929;
+    .line-style {
+        border: 0px;
+        border-bottom: 0.5px solid #666666;
         color: #fff;
         font-size: 16px;
-        padding: 0px 10px;
+        padding: 4px 6px;
+        background-color: transparent;
+        border-radius: 0px;
+    }
+    .icon-section {
+        height: 100%;
+        display: flex;
+        .icon {
+            height: 100%;
+            width: 30px;
+            padding-left: 6px;
+            border-radius: 50px 0 0 50px;
+            background-color: #292929;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            img {
+                width: 18px;
+                height: 18px;
+            }
+        }
+        .icon-style {
+            height: 100%;
+            border: 0;
+            border-radius: 0 50px 50px 0;
+            background-color: #292929;
+            color: #fff;
+            font-size: 16px;
+            padding: 0px 10px;
+            opacity: 1;
+        }
     }
 }
 </style>

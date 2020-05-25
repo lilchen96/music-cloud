@@ -21,17 +21,21 @@ export default {
 
 <style lang="less" scoped>
 .bottom-bar-section {
+    height: 58px;
     display: flex;
     justify-content: space-around;
-    padding: 8px 0px;
     background-color: #2e2e2e;
     .link-item {
         text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         .icon {
             width: 25px;
             height: 25px;
         }
         .label {
+            margin-top: 4px;
             font-size: 10px;
             color: #bfbfbf;
         }
