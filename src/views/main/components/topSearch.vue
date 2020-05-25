@@ -11,7 +11,13 @@
                 取消
             </div>
         </div>
-        <div v-if="searchSectionVisible" class="search-section">
+        <div v-if="suggestListVisible" class="suggest-list">
+            <div class="suggest-item" v-for="item in suggestList" :key="item">
+                <div class="icon"><img :src="icons.searchIcon" /></div>
+                <div class="content">{{ item }}</div>
+            </div>
+        </div>
+        <div v-if="searchSectionVisible && !suggestListVisible" class="search-section">
             <div class="module-item">
                 <div class="title">搜索历史</div>
                 <div class="history"></div>
@@ -19,7 +25,12 @@
             <div class="module-item">
                 <div class="title">热搜榜</div>
                 <div class="hot-search">
-                    <div class="hot-search-item" v-for="(item, index) in hotSearch">
+                    <div
+                        class="hot-search-item"
+                        v-for="(item, index) in hotSearch"
+                        :key="item.searchWord"
+                        @click="clickHotItem"
+                    >
                         <div class="index" :class="index <= 3 ? 'hot' : ''">{{ index + 1 }}</div>
                         <div class="info">
                             <div class="name">{{ item.searchWord }}<img :src="item.iconUrl" /></div>
@@ -39,16 +50,20 @@ export default {
     props: ["icon"],
     data() {
         return {
+            icons: {
+                searchIcon
+            },
             searchInputOptions: {
                 value: "",
                 type: "text",
                 placeholder: "请输入搜索信息",
                 style: "icon",
-                icon: searchIcon,
-                disabled: true
+                icon: searchIcon
             },
             searchSectionVisible: false,
-            hotSearch: []
+            suggestListVisible: false,
+            hotSearch: [],
+            suggestList: []
         };
     },
 
@@ -59,30 +74,32 @@ export default {
     methods: {
         showSearchSection() {
             this.searchSectionVisible = true;
-            this.searchInputOptions.disabled = false;
             this.$emit("show-search-section");
         },
         hideSearchSection() {
             this.searchSectionVisible = false;
-            this.searchInputOptions.disabled = true;
+            this.suggestListVisible = false;
+            this.searchInputOptions.value = "";
             this.$emit("hide-search-section");
         },
 
         async searchInputChange(value) {
-            let param = this.defaultSearch.realkeyword;
             // 搜索接口value
             if (value) {
-                param = value;
+                const { data } = await this.$axios({
+                    method: "get",
+                    url: "getSearchSuggest",
+                    params: {
+                        type: "mobile",
+                        keywords: value
+                    }
+                });
+                this.suggestList = data.result.allMatch ? data.result.allMatch.map(it => it.keyword) : [];
             }
-            const { data } = await this.$axios({
-                method: "get",
-                url: "getSearchSuggest",
-                params: {
-                    keywords: param,
-                    type: "mobile"
-                }
-            });
+            this.suggestListVisible = !!value;
         },
+
+        clickHotItem() {},
 
         async loadSection() {
             const requests = Promise.all([
@@ -117,10 +134,10 @@ export default {
 
 <style lang="less" scoped>
 .top-search {
+    padding: 0px 10px;
     .search-title {
-        width: calc(100vh - 52px);
+        width: calc(100% - 50px);
         height: 52px;
-        padding-left: 10px;
         display: flex;
         .image {
             margin-right: 16px;
@@ -129,20 +146,44 @@ export default {
             flex-direction: column;
         }
         .search-input {
+            flex: 1;
             height: 32px;
             margin-top: 12px;
         }
         .cancel {
-            font-size: 16px;
+            font-size: 17px;
             margin-left: 16px;
             display: flex;
             justify-content: center;
             flex-direction: column;
         }
     }
+    .suggest-list {
+        .suggest-item {
+            height: 46px;
+            display: flex;
+            .icon {
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                img {
+                    width: 14px;
+                    height: 14px;
+                    opacity: 0.8;
+                }
+            }
+            .content {
+                margin-left: 6px;
+                flex: 1;
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+            }
+        }
+    }
     .search-section {
         height: calc(100vh - 110px);
-        padding: 0px 10px;
         overflow: hidden auto;
         .module-item {
             .title {
@@ -177,7 +218,7 @@ export default {
                         width: 100px;
                         .name {
                             font-size: 14px;
-                            margin-bottom: 6px;
+                            margin-bottom: 4px;
                             img {
                                 height: 12px;
                                 margin-left: 6px;
