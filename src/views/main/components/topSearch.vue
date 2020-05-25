@@ -191,7 +191,7 @@ export default {
                 margin: 8px 0px;
             }
             .history {
-                height: 100px;
+                // height: 100px;
             }
             .hot-search {
                 display: flex;
