@@ -115,16 +115,6 @@ export default {
                     searchValue: value
                 }
             });
-            // 综合信息
-            // const { data } = await this.$axios({
-            //     method: "get",
-            //     url: "getSearchList",
-            //     params: {
-            //         keywords: value,
-            //         type: 1018
-            //     }
-            // });
-            // const searchRes = data.result;
         },
 
         async loadSection() {

@@ -1,5 +1,5 @@
-import musicList from "@/views/main/functionalPages/musicList.vue";
-import searchResult from "@/views/main/functionalPages/searchResult.vue";
+import musicList from "@/views/main/functionalPages/musicList/musicList.vue";
+import searchResult from "@/views/main/functionalPages/searchResult/searchResult.vue";
 
 export default [
     {
