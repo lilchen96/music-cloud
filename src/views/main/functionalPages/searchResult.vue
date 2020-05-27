@@ -1,7 +1,9 @@
 <template>
     <div class="search-result-section">
         <top-search
+            :inputValue="searchValue"
             :icon="icons.backIcon"
+            @icon-click="iconClick"
             @show-search-section="showSearchSection"
             @hide-search-section="hideSearchSection"
         ></top-search>
@@ -9,7 +11,6 @@
 </template>
 
 <script>
-import searchIcon from "@/assets/images/search_icon.png";
 import backIcon from "@/assets/images/back_icon.png";
 
 import topSearch from "@/views/main/components/topSearch.vue";
@@ -23,13 +24,7 @@ export default {
             icons: {
                 backIcon
             },
-            searchInputOptions: {
-                value: "",
-                type: "text",
-                placeholder: "请输入搜索信息",
-                style: "icon",
-                icon: searchIcon
-            },
+            searchValue: this.$route.params.searchValue,
             contentVisible: true
         };
     },
@@ -39,6 +34,10 @@ export default {
         },
         hideSearchSection() {
             this.contentVisible = true;
+        },
+
+        iconClick() {
+            this.$router.go(-1);
         }
     }
 };

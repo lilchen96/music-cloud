@@ -1,7 +1,7 @@
 <template>
     <div class="top-search">
         <div class="search-title">
-            <div v-if="!searchSectionVisible" class="image">
+            <div v-if="!searchSectionVisible" class="image" @click="iconClick">
                 <img :src="icon" />
             </div>
             <div class="search-input" @click="showSearchSection">
@@ -47,7 +47,7 @@
 import searchIcon from "@/assets/images/search_icon.png";
 
 export default {
-    props: ["icon"],
+    props: ["icon", "inputValue"],
     data() {
         return {
             icons: {
@@ -104,17 +104,27 @@ export default {
             this.suggestListVisible = !!value;
         },
 
-        async search(value) {
-            // 综合信息
-            const { data } = await this.$axios({
-                method: "get",
-                url: "getSearchList",
+        iconClick() {
+            this.$emit("icon-click");
+        },
+
+        search(value) {
+            this.$router.push({
+                name: "searchResult",
                 params: {
-                    keywords: value,
-                    type: 1018
+                    searchValue: value
                 }
             });
-            const searchRes = data.result;
+            // 综合信息
+            // const { data } = await this.$axios({
+            //     method: "get",
+            //     url: "getSearchList",
+            //     params: {
+            //         keywords: value,
+            //         type: 1018
+            //     }
+            // });
+            // const searchRes = data.result;
         },
 
         async loadSection() {
@@ -143,6 +153,15 @@ export default {
                 content: it.content,
                 iconUrl: it.iconUrl
             }));
+        }
+    },
+
+    watch: {
+        inputValue: {
+            handler(value) {
+                this.searchInputOptions.value = value;
+            },
+            immediate: true
         }
     }
 };
