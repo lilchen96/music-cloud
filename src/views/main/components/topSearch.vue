@@ -12,7 +12,7 @@
             </div>
         </div>
         <div v-if="suggestListVisible" class="suggest-list">
-            <div class="suggest-item" v-for="item in suggestList" :key="item" @@click="search(item)">
+            <div class="suggest-item" v-for="item in suggestList" :key="item" @click="search(item)">
                 <div class="icon"><img :src="icons.searchIcon" /></div>
                 <div class="content">{{ item }}</div>
             </div>
