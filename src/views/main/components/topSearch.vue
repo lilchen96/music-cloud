@@ -12,7 +12,7 @@
             </div>
         </div>
         <div v-if="suggestListVisible" class="suggest-list">
-            <div class="suggest-item" v-for="item in suggestList" :key="item">
+            <div class="suggest-item" v-for="item in suggestList" :key="item" @@click="search(item)">
                 <div class="icon"><img :src="icons.searchIcon" /></div>
                 <div class="content">{{ item }}</div>
             </div>
@@ -29,7 +29,7 @@
                         class="hot-search-item"
                         v-for="(item, index) in hotSearch"
                         :key="item.searchWord"
-                        @click="clickHotItem"
+                        @click="search(item.searchWord)"
                     >
                         <div class="index" :class="index <= 3 ? 'hot' : ''">{{ index + 1 }}</div>
                         <div class="info">
@@ -63,7 +63,8 @@ export default {
             searchSectionVisible: false,
             suggestListVisible: false,
             hotSearch: [],
-            suggestList: []
+            suggestList: [],
+            searchTimer: null
         };
     },
 
@@ -83,23 +84,38 @@ export default {
             this.$emit("hide-search-section");
         },
 
-        async searchInputChange(value) {
-            // 搜索接口value
-            if (value) {
-                const { data } = await this.$axios({
-                    method: "get",
-                    url: "getSearchSuggest",
-                    params: {
-                        type: "mobile",
-                        keywords: value
-                    }
-                });
-                this.suggestList = data.result.allMatch ? data.result.allMatch.map(it => it.keyword) : [];
-            }
+        searchInputChange(value) {
+            // 防抖
+            clearTimeout(this.searchTimer);
+            this.searchTimer = setTimeout(async () => {
+                // 搜索接口value
+                if (value) {
+                    const { data } = await this.$axios({
+                        method: "get",
+                        url: "getSearchSuggest",
+                        params: {
+                            type: "mobile",
+                            keywords: value
+                        }
+                    });
+                    this.suggestList = data.result.allMatch ? data.result.allMatch.map(it => it.keyword) : [];
+                }
+            }, 500);
             this.suggestListVisible = !!value;
         },
 
-        clickHotItem() {},
+        async search(value) {
+            // 综合信息
+            const { data } = await this.$axios({
+                method: "get",
+                url: "getSearchList",
+                params: {
+                    keywords: value,
+                    type: 1018
+                }
+            });
+            const searchRes = data.result;
+        },
 
         async loadSection() {
             const requests = Promise.all([
@@ -144,6 +160,10 @@ export default {
             display: flex;
             justify-content: center;
             flex-direction: column;
+            img {
+                width: 26px;
+                height: 26px;
+            }
         }
         .search-input {
             flex: 1;

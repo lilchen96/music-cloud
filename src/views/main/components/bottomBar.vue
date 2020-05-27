@@ -35,7 +35,7 @@ export default {
             height: 25px;
         }
         .label {
-            margin-top: 4px;
+            margin-top: 4 px;
             font-size: 10px;
             color: #bfbfbf;
         }
