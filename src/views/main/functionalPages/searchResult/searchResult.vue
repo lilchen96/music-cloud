@@ -82,6 +82,7 @@ export default {
                 moreText: playListInfo.moreText,
                 list: playListInfo.playLists
             };
+            //  数据处理
             this.videoInfo = { more: videoInfo.more, moreText: videoInfo.moreText, list: videoInfo.videos };
             this.artistInfo = { more: artistInfo.more, moreText: artistInfo.moreText, list: artistInfo.artists };
             this.albumInfo = { more: albumInfo.more, moreText: albumInfo.moreText, list: albumInfo.albums };
