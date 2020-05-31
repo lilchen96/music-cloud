@@ -59,7 +59,6 @@ export default {
 
         async loadPage() {
             // 综合信息
-            debugger;
             const { data } = await this.$axios({
                 method: "get",
                 url: "getSearchList",
