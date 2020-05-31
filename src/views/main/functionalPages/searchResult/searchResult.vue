@@ -65,6 +65,7 @@ export default {
                 url: "getSearchList",
                 params: {
                     keywords: this.searchValue,
+                    // 综合查询type
                     type: 1018
                 }
             });
