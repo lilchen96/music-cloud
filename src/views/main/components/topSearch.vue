@@ -85,10 +85,10 @@ export default {
         },
 
         searchInputChange(value) {
-            // 防抖
+            // 防抖器
             clearTimeout(this.searchTimer);
             this.searchTimer = setTimeout(async () => {
-                // 搜索接口value
+                // 搜索接口 value
                 if (value) {
                     const { data } = await this.$axios({
                         method: "get",
