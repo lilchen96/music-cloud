@@ -1,4 +1,5 @@
 export default {
+    // 更换下标
     changeIndex: (arr, indexA, indexB) => {
         const newArr = arr.concat([]);
         const temp = newArr[indexA];
@@ -7,6 +8,7 @@ export default {
         return newArr;
     },
 
+    // 寻找相同元素
     findSameEl(arr1, arr2, key) {
         const result = [];
         arr1.forEach(item => {
@@ -18,6 +20,7 @@ export default {
         return result;
     },
 
+    // 删除指定元素
     deleteEl(arr, deleteArr, key) {
         const result = arr.concat([]);
         deleteArr.forEach(item => {
