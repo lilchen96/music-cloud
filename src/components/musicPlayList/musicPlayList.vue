@@ -62,6 +62,7 @@ export default {
     },
 
     mounted() {
+        // mounted
         this.musicInfoWidth = document.querySelector(".content").offsetWidth - 10 - 16 - 25;
     },
 
