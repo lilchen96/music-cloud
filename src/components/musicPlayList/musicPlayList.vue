@@ -50,6 +50,7 @@ export default {
             type: Array,
             default: []
         },
+        // 其他信息
         otherInfo: {
             type: Object,
             default: () => {
