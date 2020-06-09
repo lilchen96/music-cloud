@@ -46,6 +46,7 @@ export default {
         };
     },
     props: {
+        // 歌曲列表
         musicList: {
             type: Array,
             default: []
