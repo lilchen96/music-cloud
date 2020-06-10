@@ -73,6 +73,7 @@ export default {
             this.$emit("clickMusic", [id]);
         },
 
+        // 播放全部
         playAll() {
             this.$emit(
                 "clickMusic",
