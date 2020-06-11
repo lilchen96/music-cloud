@@ -46,9 +46,11 @@ export default {
         this.loadPage();
     },
     methods: {
+        // 隐藏搜索
         showSearchSection() {
             this.contentVisible = false;
         },
+        // 隐藏搜索
         hideSearchSection() {
             this.contentVisible = true;
         },
