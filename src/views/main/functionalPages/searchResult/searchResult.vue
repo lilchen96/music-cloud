@@ -79,6 +79,7 @@ export default {
                 artist: artistInfo,
                 album: albumInfo
             } = searchRes;
+            // 歌曲信息
             this.songInfo = { more: songInfo.more, moreText: songInfo.moreText, list: songInfo.songs };
             this.playListInfo = {
                 more: playListInfo.more,
