@@ -159,23 +159,7 @@ export default {
     },
 
     methods: {
-        registerScrollEvent() {
-            // const topHeight = document.querySelector(".mine-top").offsetHeight;
-            // const outer = document.querySelector(".section");
-            // const inner = document.querySelector(".mine-content");
-            // outer.onscroll = () => {
-            //     if (outer.scrollTop - 10 >= topHeight) {
-            //         this.outerScroller = false;
-            //         outer.scrollTop = topHeight;
-            //         // outer.style.position = "fixed";
-            //     }
-            // };
-            // inner.onscroll = () => {
-            //     if (inner.scrollTop <= 0) {
-            //         this.outerScroller = true;
-            //     }
-            // };
-        },
+        registerScrollEvent() {},
 
         // 初始化用户信息
         initAccountInfo() {
