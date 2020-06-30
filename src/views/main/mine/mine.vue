@@ -13,7 +13,6 @@
                         </div>
                         <div class="name">{{ nickname }}</div>
                     </div>
-                    <!-- <div class="right"></div> -->
                 </div>
                 <div class="operation">
                     <div class="operation-item">
