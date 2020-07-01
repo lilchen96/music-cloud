@@ -14,6 +14,7 @@
                         <div class="name">{{ nickname }}</div>
                     </div>
                 </div>
+                <!-- 操作模块-->
                 <div class="operation">
                     <div class="operation-item">
                         <img class="icon" :src="icons.myFavouriteIcon" />
