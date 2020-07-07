@@ -34,6 +34,7 @@
                     </div>
                 </div>
             </div>
+            <!-- 操作模块-->
             <div class="mine-content" :class="!outerScroller ? 'overflow' : ''">
                 <div class="functional-module">
                     <div class="top-title">我的音乐</div>
