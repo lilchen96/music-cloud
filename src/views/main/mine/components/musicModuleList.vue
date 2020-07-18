@@ -33,6 +33,7 @@ export default {
     },
 
     methods: {
+        // 查询点击
         click(link, query) {
             this.$router.push({
                 name: link,
